@@ -14,8 +14,10 @@ from astrobot.astro.constants import DUSTHANA, KENDRA, TRIKONA, house_from
 from astrobot.astro.dasha import DashaTree, Period
 from astrobot.astro.transits import snapshots
 
-# BPHS antardasha chapters (e.g. Ch. 57 Saturn, Ch. 58 Mercury, G.C. Sharma numbering): an Antardasha lord
-# in a kendra, trikona or the 11th from the Mahadasha lord gives good results; in the 6th, 8th or 12th, adverse.
+# Antardasha lord counted from the Mahadasha lord (the "Dasha Lagna"): in a kendra, trikona or the 11th it gives
+# good results; in the 6th, 8th or 12th, adverse. BPHS antardasha chapters (e.g. Ch. 57-58, G.C. Sharma numbering;
+# Ch. 50 v. 37, 54 v. 56, 57 v. 78, 62 v. 45 in the edition V.P. Manley cites), Phaladeepika Ch. 20 v. 29,
+# Sarvartha Chintamani Ch. 29 v. 3. See V.P. Manley, "The Dasha Lagna: Key to Accurate Predictions" (2006).
 AD_SUPPORTIVE = KENDRA | TRIKONA | {11}
 AD_OBSTRUCTED = DUSTHANA
 DASHA_SHARE = 0.65                # rest is the transit trigger
