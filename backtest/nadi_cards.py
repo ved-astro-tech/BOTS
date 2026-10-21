@@ -51,6 +51,15 @@ def rao_wide(c: Chart, p: str) -> bool:
     return at(c, p, 1, 2, 5, 7, 9, 12)
 
 
+def bc_link(c: Chart, p: str) -> bool:
+    """With or in Nadi aspect (1/5/7/9) to Saturn, or Nadi-aspecting Saturn's 2nd sign (2/6/8/10 from Saturn)."""
+    return at(c, p, 1, 5, 7, 9, 2, 6, 8, 10)
+
+
+def bc_alone(c: Chart) -> bool:
+    return not any(at(c, p, 1, 5, 7, 9) for p in ("Sun", "Moon", "Mars", "Mercury", "Jupiter", "Venus", "Rahu", "Ketu"))
+
+
 GOV = {"government"}
 CARDS = {
     # Bhrigu Nadi Sangraha (N. Srinivasan Shastry), Saturn chapter pp. 44-49
@@ -87,6 +96,17 @@ CARDS = {
     "Rao Mercury+Ketu with Jupiter 2nd -> lawyer": ("Rao", lambda c: c.sign("Mercury") == c.sign("Ketu") and at(c, "Jupiter", 2, base="Mercury"), {"law"}),
     "Rao Ketu combined with Saturn -> disputes/law": ("Rao", lambda c: rao_wide(c, "Ketu"), {"law"}),
     "Rao Jupiter in 2/5/7/9 from Saturn -> administrative power": ("Rao", lambda c: at(c, "Jupiter", 2, 5, 7, 9), GOV | {"politics", "royalty"}),
+
+    # Bhaskar Chakraborty, "Nadi Easy Method of Determining Profession" (Saptarishis, 3 Jan 2015), quoting Bhrigu Nadi:
+    # planets with or in Nadi aspect to Saturn, or aspecting Saturn's 2nd sign, show the profession. The upload's
+    # planet-to-profession pages are blank, so the meanings below are Rao's (pp. 202-203).
+    "BC Sun linked to Saturn or its 2nd -> govt": ("Chakraborty", lambda c: bc_link(c, "Sun"), GOV),
+    "BC Rahu linked to Saturn or its 2nd -> computers": ("Chakraborty", lambda c: bc_link(c, "Rahu"), {"it"}),
+    "BC Mercury linked to Saturn or its 2nd -> commerce": ("Chakraborty", lambda c: bc_link(c, "Mercury"), {"business"}),
+    "BC Venus linked to Saturn or its 2nd -> finance": ("Chakraborty", lambda c: bc_link(c, "Venus"), {"finance"}),
+    "BC Ketu linked to Saturn or its 2nd -> disputes/law": ("Chakraborty", lambda c: bc_link(c, "Ketu"), {"law"}),
+    "BC Jupiter linked to Saturn or its 2nd -> law/advice/admin": ("Chakraborty", lambda c: bc_link(c, "Jupiter"), {"law", "government"}),
+    "BC Saturn alone -> profession from the next sign (fiery/earthy 2nd = business)": ("Chakraborty", lambda c: bc_alone(c) and (c.sign("Saturn") + 1) % 4 in (0, 1), {"business"}),
 }
 
 
