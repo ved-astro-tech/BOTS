@@ -65,3 +65,19 @@ def test_job_or_business_orientation():
     timeline = {a["lords"][1]: a for a in ori["antardasha_timeline"]}
     assert timeline["Venus"]["job"] and not timeline["Venus"]["business"]
     assert timeline["Jupiter"]["business"]
+
+
+def test_antardasha_from_mahadasha_lord_gates_events(birth):
+    engine = Engine(birth, "career")
+    end = datetime(2036, 10, 21, tzinfo=timezone.utc)
+    rise = engine.score("rise", NOW, end)
+    setback = engine.score("setback", NOW, end)
+    for r, s in zip(rise, setback):
+        nature = r.ad_from_md["nature"]
+        assert nature == timing.ad_from_md(engine.chart, *r.period.lords[:2])["nature"]
+        if nature == "obstructed":
+            assert r.dasha == 0
+        if nature == "supportive":
+            assert s.dasha == 0
+    # Joint signification: a period whose lords are all linked scores above zero unless gated.
+    assert any(r.dasha > 0 for r in rise)

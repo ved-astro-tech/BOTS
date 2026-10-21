@@ -59,10 +59,11 @@ def orientation(chart: Chart, kp: KPChart, cfg: dict, running_lords: list[str],
     leans = "job" if gap >= 2 else "business" if gap <= -2 else "both"
     dasha = {p: {"job": 6 in chart.significations(p), "business": 7 in chart.significations(p)}
              for p in dict.fromkeys(running_lords)}
-    # The Mahadasha sets the theme; each Antardasha lord delivers its own houses within it,
-    # so list which Antardashas of the running Mahadasha open the job (6) or business (7) house.
+    # Each Antardasha lord delivers its own houses within the Mahadasha, so list which Antardashas of the
+    # running Mahadasha open the job (6) or business (7) house, and where each sits from the MD lord.
     timeline = [{**ad.as_dict(), "job": 6 in chart.significations(ad.lord),
-                 "business": 7 in chart.significations(ad.lord)} for ad in antardashas or []]
+                 "business": 7 in chart.significations(ad.lord),
+                 "ad_from_md": timing.ad_from_md(chart, ad.lords[0], ad.lord)} for ad in antardashas or []]
     return {"leans": leans, "totals": totals, "kp_cusp_sub_lord_houses": sorted(csl_houses),
             "running_dasha_activates": dasha, "antardasha_timeline": timeline, "matches": [m.as_dict() for m in matches],
             "eighth_house_planets": chart.occupants(8)}
@@ -105,7 +106,8 @@ class Engine:
         profile = self.cfg["event_types"].get(event, event)
         houses = self._houses(profile)
         against = self._houses(self.cfg["events"][profile].get("against"))
-        return timing.score_periods(self.chart, self.tree, houses, self.points, start, end, against)
+        nature = self.cfg["events"][profile].get("nature", "neutral")
+        return timing.score_periods(self.chart, self.tree, houses, self.points, start, end, against, nature)
 
     def build(self, now: datetime | None = None, horizon_years: float = 3, lookback_years: float = 10) -> dict:
         now = now or datetime.now(timezone.utc)

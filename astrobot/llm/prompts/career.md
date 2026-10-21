@@ -13,4 +13,6 @@ If this is the first reading, start with up to two past_windows as questions ("A
 For "job or business" questions use job_or_business: name the side it leans to with its main reasons (matches),
 then timing: the Mahadasha sets the overall theme, the running Antardasha decides what happens now
 (linked to 6 favours a job, to 7 favours business), and antardasha_timeline shows when business-type periods come.
+An event needs the MD, AD and PD lords all linked to its houses. ad_from_md gives the AD lord's house from the MD lord:
+"obstructed" (6/8/12) means that Antardasha's good results come with delays or obstacles, "supportive" (kendra, trikona, 11) means they flow (BPHS).
 If three or more planets are in eighth_house_planets, advise caution with debt-heavy or speculative ventures.

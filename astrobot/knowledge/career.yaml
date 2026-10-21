@@ -14,10 +14,12 @@ events:
     description: new job, promotion, recognition, business start
     houses: {10: 1.0, 11: 0.8, 6: 0.7, 2: 0.5, 1: 0.4}
     against: setback
+    nature: favourable   # withheld when the AD lord is 6/8/12 from the MD lord (BPHS antardasha chapters)
   setback:
     description: job loss, demotion, forced break, business loss
     houses: {12: 1.0, 8: 0.9, 5: 0.6, 9: 0.5}
     against: rise
+    nature: adverse      # withheld when the AD lord is in a kendra, trikona or 11th from the MD lord
   change:
     description: switching job or role, transfer, moving for work
     houses: {10: 0.8, 11: 0.6, 6: 0.6, 3: 0.5, 12: 0.5, 9: 0.4, 5: 0.4}

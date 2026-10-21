@@ -10,10 +10,14 @@ from dataclasses import dataclass
 from datetime import datetime
 
 from astrobot.astro.chart import Chart
+from astrobot.astro.constants import DUSTHANA, KENDRA, TRIKONA, house_from
 from astrobot.astro.dasha import DashaTree, Period
 from astrobot.astro.transits import snapshots
 
-LEVEL_WEIGHTS = (0.3, 0.4, 0.3)   # MD, AD, PD
+# BPHS antardasha chapters (e.g. Ch. 57 Saturn, Ch. 58 Mercury, G.C. Sharma numbering): an Antardasha lord
+# in a kendra, trikona or the 11th from the Mahadasha lord gives good results; in the 6th, 8th or 12th, adverse.
+AD_SUPPORTIVE = KENDRA | TRIKONA | {11}
+AD_OBSTRUCTED = DUSTHANA
 DASHA_SHARE = 0.65                # rest is the transit trigger
 LINK_DAMPING = 0.7                # keeps one weak house from looking like a full link
 POINT_WEIGHTS = {"lagna": 1.0, "moon": 0.7, "lord": 0.7}
@@ -27,10 +31,18 @@ class ScoredPeriod:
     transit: float
     score: float
     links: dict[str, list[int]]
+    ad_from_md: dict
 
     def as_dict(self) -> dict:
         return {**self.period.as_dict(), "score": round(self.score, 3), "dasha": round(self.dasha, 3),
-                "transit": round(self.transit, 3), "lord_houses": self.links}
+                "transit": round(self.transit, 3), "lord_houses": self.links, "ad_from_md": self.ad_from_md}
+
+
+def ad_from_md(chart: Chart, md: str, ad: str) -> dict:
+    """House of the Antardasha lord counted from the Mahadasha lord, and what BPHS says it does."""
+    house = house_from(chart.sign(ad), chart.sign(md))
+    nature = "supportive" if house in AD_SUPPORTIVE else "obstructed" if house in AD_OBSTRUCTED else "neutral"
+    return {"house": house, "nature": nature}
 
 
 def lord_link(chart: Chart, lord: str, houses: dict[int, float],
@@ -82,19 +94,31 @@ def transit_score(activation: dict[str, float]) -> float:
 
 
 def score_periods(chart: Chart, tree: DashaTree, houses: dict[int, float], points: dict[int, float],
-                  start: datetime, end: datetime, against: dict[int, float] | None = None) -> list[ScoredPeriod]:
+                  start: datetime, end: datetime, against: dict[int, float] | None = None,
+                  nature: str = "neutral") -> list[ScoredPeriod]:
+    """Dasha part follows two sourced rules:
+    1. Joint signification (K.S. Krishnamurti, KP Readers): the event comes only when the Dasha, Bhukti and
+       Antara lords all signify its houses, so the three links combine as a geometric mean, which is 0 when
+       any lord is unlinked and gives no level more say than another.
+    2. Antardasha from Mahadasha lord (BPHS antardasha chapters): an AD lord in 6/8/12 from the MD lord
+       withholds favourable events; in a kendra, trikona or 11th it withholds adverse ones."""
     out = []
     link_cache: dict[str, tuple[float, list[int]]] = {}
     for pd in tree.pds_between(start, end):
-        links, dasha = {}, 0.0
-        for weight, lord in zip(LEVEL_WEIGHTS, pd.lords):
+        links, values = {}, []
+        for lord in pd.lords:
             if lord not in link_cache:
                 link_cache[lord] = lord_link(chart, lord, houses, against)
             value, hit = link_cache[lord]
-            dasha += weight * value
+            values.append(value)
             links[lord] = hit
+        relation = ad_from_md(chart, pd.lords[0], pd.lords[1])
+        blocked = (nature == "favourable" and relation["nature"] == "obstructed") or \
+                  (nature == "adverse" and relation["nature"] == "supportive")
+        dasha = 0.0 if blocked else (values[0] * values[1] * values[2]) ** (1 / 3)
         transit = transit_score(transit_activation(points, max(pd.start, start), min(pd.end, end)))
-        out.append(ScoredPeriod(pd, dasha, transit, DASHA_SHARE * dasha + (1 - DASHA_SHARE) * transit, links))
+        out.append(ScoredPeriod(pd, dasha, transit, DASHA_SHARE * dasha + (1 - DASHA_SHARE) * transit,
+                                links, relation))
     return out
 
 
