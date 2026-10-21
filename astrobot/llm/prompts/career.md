@@ -16,3 +16,8 @@ then timing: the Mahadasha sets the overall theme, the running Antardasha decide
 An event needs the MD, AD and PD lords all linked to its houses. ad_from_md gives the AD lord's house from the MD lord:
 "obstructed" (6/8/12) means that Antardasha's good results come with delays or obstacles, "supportive" (kendra, trikona, 11) means they flow (BPHS).
 If three or more planets are in eighth_house_planets, advise caution with debt-heavy or speculative ventures.
+
+For "what kind of work" use karmajiva (Brihat Jataka Ch. 10): name the livelihood planet and its fields, then refine with likely_fields.
+For "government or private" use sector (BPHS Ch. 3 roles): kings (Sun, Moon) acting directly on the 10th favour government;
+only indirect links mean government is possible but not the main path; ministers point to advisory or specialist roles,
+the servant (Saturn) to service within large organisations. Say the mapping to modern sectors is interpretation.

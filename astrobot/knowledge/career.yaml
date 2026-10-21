@@ -60,6 +60,32 @@ fields:
   Rahu: technology, foreign companies, aviation, research, unconventional fields
   Ketu: research, spirituality, coding, occult sciences, technical niche work
 
+# Brihat Jataka Ch. 10 (Karmajiva), Varahamihira: the nature of livelihood comes from the lord of the
+# navamsa occupied by the strongest of the 10th lords counted from Lagna, Moon and Sun. Classical
+# livelihoods per planet in our words; the modern column is our reading of them, not the text.
+karmajiva:
+  Sun: {classical: perfumes, gold, wool, medicines, modern: "medicine, pharma, gold and finance, authority roles"}
+  Moon: {classical: "agriculture, water products, cattle, support of women", modern: "food, dairy, hospitality, shipping, public-facing care"}
+  Mars: {classical: "minerals, fire, weapons, daring deeds", modern: "engineering, metals, defence and police, surgery, real estate"}
+  Mercury: {classical: "writing, arithmetic, poetry, fine arts", modern: "writing and content, accounts and finance, software and data, teaching, communication"}
+  Jupiter: {classical: "learned men and priests, temples, mines, charity", modern: "teaching, law, advisory, banking, religious or charitable work"}
+  Venus: {classical: "gems, silver, cattle", modern: "arts, design, media, luxury goods, fashion, vehicles"}
+  Saturn: {classical: "hard labour, carrying loads, lowly work", modern: "industry, operations, construction, large organisations, mass services"}
+
+# BPHS Ch. 3 vv. 14-15: Sun and Moon are kings, Mars the commander, Mercury the prince, Jupiter and Venus
+# ministers, Saturn the servant, Rahu and Ketu the army. Mapping kings to government service is our
+# interpretation of that cabinet, applied to the planets that rule or influence the 10th.
+royal_roles:
+  Sun: king
+  Moon: king
+  Mars: commander
+  Mercury: prince
+  Jupiter: minister
+  Venus: minister
+  Saturn: servant
+  Rahu: army
+  Ketu: army
+
 cards:
   - id: CAR-001
     title: 10th lord in a kendra or trikona

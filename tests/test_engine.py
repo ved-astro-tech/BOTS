@@ -81,3 +81,13 @@ def test_antardasha_from_mahadasha_lord_gates_events(birth):
             assert s.dasha == 0
     # Joint signification: a period whose lords are all linked scores above zero unless gated.
     assert any(r.dasha > 0 for r in rise)
+
+
+def test_karmajiva_and_sector(birth):
+    ev = build_evidence(birth, "career", now=NOW)
+    kj = ev["karmajiva"]
+    best = max(kj["candidates"], key=lambda c: c["lord_strength"])
+    assert kj["strongest_tenth_lord"] == best["lord"]
+    assert kj["livelihood_planet"] in load_domain("career")["karmajiva"]
+    assert ev["sector"]["leans"] in ("government", "government possible", "private")
+    assert any(l["link"] == "10th lord" for l in ev["sector"]["links"])

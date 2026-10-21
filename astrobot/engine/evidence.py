@@ -9,10 +9,10 @@ from collections import Counter
 from datetime import datetime, timedelta, timezone
 
 from astrobot.astro.chart import Chart
-from astrobot.astro.constants import SIGNS
+from astrobot.astro.constants import PLANETS, SIGN_LORDS, SIGNS
 from astrobot.astro.dasha import DashaTree
 from astrobot.astro.ephemeris import BirthData
-from astrobot.astro.kp import KPChart
+from astrobot.astro.kp import KPChart, star_and_sub_lord
 from astrobot.engine import timing
 from astrobot.engine.rules import evaluate, load_domain
 
@@ -67,6 +67,47 @@ def orientation(chart: Chart, kp: KPChart, cfg: dict, running_lords: list[str],
     return {"leans": leans, "totals": totals, "kp_cusp_sub_lord_houses": sorted(csl_houses),
             "running_dasha_activates": dasha, "antardasha_timeline": timeline, "matches": [m.as_dict() for m in matches],
             "eighth_house_planets": chart.occupants(8)}
+
+
+def karmajiva(chart: Chart, cfg: dict) -> dict | None:
+    """Brihat Jataka Ch. 10: strongest of the 10th lords from Lagna, Moon and Sun, then the lord of the
+    navamsa it occupies names the livelihood. Strength here is our dignity score, as there is no Shadbala yet."""
+    if "karmajiva" not in cfg:
+        return None
+    refs = {"Lagna": chart.lagna(), "Moon": chart.sign("Moon"), "Sun": chart.sign("Sun")}
+    candidates = []
+    for ref, sign in refs.items():
+        tenth = (sign + 9) % 12
+        lord = SIGN_LORDS[tenth]
+        candidates.append({"from": ref, "tenth_sign": SIGNS[tenth], "lord": lord,
+                           "lord_strength": round(chart.strength(lord), 2),
+                           "planets_in_tenth": [p for p in PLANETS if chart.sign(p) == tenth]})
+    best = max(candidates, key=lambda c: c["lord_strength"])
+    navamsa = chart.sign(best["lord"], "D9")
+    ruler = SIGN_LORDS[navamsa]
+    return {"candidates": candidates, "strongest_tenth_lord": best["lord"],
+            "navamsa_sign": SIGNS[navamsa], "livelihood_planet": ruler, **cfg["karmajiva"][ruler],
+            "source": "Brihat Jataka Ch. 10 (Karmajiva)"}
+
+
+def sector(chart: Chart, kp: KPChart, cfg: dict) -> dict | None:
+    """Government or private: the BPHS role (Ch. 3 vv. 14-15) of each planet tied to the 10th.
+    Kings (Sun, Moon) acting directly on the 10th point to government; tied only indirectly, possible."""
+    roles = cfg.get("royal_roles")
+    if not roles:
+        return None
+    csl = kp.cusp_sub_lord(cfg["kp"]["cusp"])
+    direct = {"10th lord": [chart.lord(10)], "in 10th": chart.occupants(10), "aspects 10th": chart.aspecting(10),
+              "D10 10th lord": [chart.lord(10, "D10")], "D10 lagna lord": [chart.lord(1, "D10")],
+              "KP 10th cusp sub lord": [csl]}
+    indirect = {"Amatyakaraka": [chart.chara_karakas["Amatyakaraka"]],
+                "star lord of the 10th cusp sub lord": [star_and_sub_lord(kp.longitudes[csl])[0]]}
+    links = [{"planet": p, "role": roles[p], "link": why, "direct": d}
+             for d, group in ((True, direct), (False, indirect)) for why, ps in group.items() for p in ps]
+    kings_direct = [l for l in links if l["role"] == "king" and l["direct"]]
+    kings_indirect = [l for l in links if l["role"] == "king" and not l["direct"]]
+    leans = "government" if kings_direct else "government possible" if kings_indirect else "private"
+    return {"leans": leans, "links": links, "source": "BPHS Ch. 3 vv. 14-15 (planetary cabinet)"}
 
 
 def likely_fields(chart: Chart, cfg: dict) -> list[dict]:
@@ -146,6 +187,8 @@ class Engine:
             "promise": promise(self.chart, self.cfg),
             "kp": kp,
             "likely_fields": likely_fields(self.chart, self.cfg),
+            "karmajiva": karmajiva(self.chart, self.cfg),
+            "sector": sector(self.chart, self.kp, self.cfg),
             "job_or_business": orientation(self.chart, self.kp, self.cfg, list(md.lords + ad.lords),
                                            self.tree.antardashas(md)),
             "current_dasha": {
