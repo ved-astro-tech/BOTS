@@ -21,3 +21,9 @@ For "what kind of work" use karmajiva (Brihat Jataka Ch. 10): name the livelihoo
 For "government or private" use sector (BPHS Ch. 3 roles): kings (Sun, Moon) acting directly on the 10th favour government;
 only indirect links mean government is possible but not the main path; ministers point to advisory or specialist roles,
 the servant (Saturn) to service within large organisations. Say the mapping to modern sectors is interpretation.
+
+For KP questions on job, business or government use kp_career: leans comes from the 10th cusp sub lord (6 = job,
+7 = business); government needs its star lord to signify 6 and 10 and a link to Sun, Moon or Mars. For "when",
+use kp_career.timeline: periods where all three lords (MD, AD, PD) signify the outcome's houses. Prefer "full"
+windows without "mixed"; "mixed" means a lord also signifies denying houses, so the result comes with struggle.
+If kp_career and the Parashari ad_from_md disagree, say so plainly instead of hiding one.

@@ -48,6 +48,34 @@ kp:
   yes_houses: [2, 6, 10, 11]
   no_houses: [5, 8, 12]
 
+# KP career verdict and timing. House meanings follow K.S. Krishnamurti (KP Readers): 2 earnings,
+# 6 service, 7 partnership and trade, 10 profession, 11 gains; the 12th from a house negates it
+# (5 = 12th from 6, 9 = 12th from 10, 6 = 12th from 7). The rule sets below are as taught by KP
+# practitioners (references in each block); none of them comes with verse numbers.
+kp_career:
+  outcomes:
+    job:
+      # 10th cusp sub lord signifies 6 (with 2, 10, 11): service. kpastrologylearning.com tenth-house rules 1 and 6;
+      # paramarsh.app KP career guide.
+      cusp_needs: [6]
+      houses: [2, 6, 10, 11]
+      core: [6, 10]
+      deny: [5, 9, 12]
+    business:
+      # 10th cusp sub lord signifies 7 and 11 with 6 quiet: business. Same references, rule 6 and the
+      # paramarsh "job vs business" section.
+      cusp_needs: [7]
+      houses: [2, 7, 10, 11]
+      core: [7, 11]
+      deny: [6, 8, 12]
+  # Government: the 10th cusp sub lord, or its star lord, is or is linked to Sun (central government),
+  # Moon (state government) or Mars (uniformed services), while signifying 6 and 10
+  # (jagannathhora.com, "Govt Job vs Business: The 10th Cusp Sub-Lord Method"). Practitioners disagree on
+  # Saturn and Jupiter, so they are reported but do not decide.
+  government_planets: {Sun: central government, Moon: state government, Mars: uniformed services}
+  government_houses: [6, 10]
+  contested_government_planets: [Saturn, Jupiter]
+
 # Nature of work by planet (Phaladeepika and Saravali on the 10th house; common practice).
 fields:
   Sun: government, administration, politics, leadership roles, medicine

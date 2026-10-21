@@ -13,7 +13,7 @@ from astrobot.astro.constants import PLANETS, SIGN_LORDS, SIGNS
 from astrobot.astro.dasha import DashaTree
 from astrobot.astro.ephemeris import BirthData
 from astrobot.astro.kp import KPChart, star_and_sub_lord
-from astrobot.engine import timing
+from astrobot.engine import kp_career, timing
 from astrobot.engine.rules import evaluate, load_domain
 
 YEAR = timedelta(days=365.25)
@@ -150,6 +150,14 @@ class Engine:
         nature = self.cfg["events"][profile].get("nature", "neutral")
         return timing.score_periods(self.chart, self.tree, houses, self.points, start, end, against, nature)
 
+    def _kp_career(self, now: datetime) -> dict | None:
+        spec = self.cfg.get("kp_career")
+        if not spec:
+            return None
+        md = self.tree.at(now)[0]
+        return {**kp_career.verdict(self.chart, self.kp, spec),
+                "timeline": kp_career.timeline(self.chart, self.kp, self.tree, spec, now, md.end)}
+
     def build(self, now: datetime | None = None, horizon_years: float = 3, lookback_years: float = 10) -> dict:
         now = now or datetime.now(timezone.utc)
         if now.tzinfo is None:
@@ -189,6 +197,7 @@ class Engine:
             "likely_fields": likely_fields(self.chart, self.cfg),
             "karmajiva": karmajiva(self.chart, self.cfg),
             "sector": sector(self.chart, self.kp, self.cfg),
+            "kp_career": self._kp_career(now),
             "job_or_business": orientation(self.chart, self.kp, self.cfg, list(md.lords + ad.lords),
                                            self.tree.antardashas(md)),
             "current_dasha": {

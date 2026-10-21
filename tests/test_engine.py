@@ -91,3 +91,16 @@ def test_karmajiva_and_sector(birth):
     assert kj["livelihood_planet"] in load_domain("career")["karmajiva"]
     assert ev["sector"]["leans"] in ("government", "government possible", "private")
     assert any(l["link"] == "10th lord" for l in ev["sector"]["links"])
+
+
+def test_kp_career_verdict_and_joint_periods(birth):
+    engine = Engine(birth, "career")
+    spec = engine.cfg["kp_career"]
+    k = engine.build(now=NOW)["kp_career"]
+    assert k["leans"] in ("job", "business", "both", "neither clearly")
+    assert set(k["timeline"]) == set(spec["outcomes"])
+    for name, windows in k["timeline"].items():
+        houses = set(spec["outcomes"][name]["houses"])
+        for w in windows:
+            for label in w["periods"]:
+                assert all(engine.kp.significations(lord) & houses for lord in label.split("/"))
