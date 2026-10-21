@@ -132,7 +132,8 @@ def population(n: int = 2000, seed: int = 7) -> list[Chart]:
     return out
 
 
-def main() -> None:
+def main(cards: dict | None = None) -> None:
+    cards = cards or CARDS
     import yaml
     fields = {}
     for p in sys.argv[1:]:
@@ -143,7 +144,7 @@ def main() -> None:
     print(f"{len(charts)} charts, {len(pop)} random population charts\n")
     print("| Book | Card | Targets | Holds for targets | Holds for others | Population | Lift vs others | p (Fisher) | p (vs population) | Hits |")
     print("| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |")
-    for name, (book, rule, targets) in CARDS.items():
+    for name, (book, rule, targets) in cards.items():
         res = [(n, rule(c), bool(g & targets)) for n, g, c in charts]
         t = [r for _, r, tg in res if tg]
         o = [r for _, r, tg in res if not tg]
