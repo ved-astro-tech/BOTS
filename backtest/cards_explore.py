@@ -82,7 +82,7 @@ def groups(case: dict) -> set[str]:
     g = {f.get("category") or f.get("sector")}
     if "lawyer" in str(f.get("field", "")) or "judge" in str(f.get("field", "")):
         g.add("law")
-    return {x for x in g if x and x != "student", "unemployed"}  # students have no career outcome yet
+    return {x for x in g if x and x not in ("student", "unemployed")}  # no career outcome yet
 
 
 def load(paths: list[str]) -> list[tuple[str, set[str], Chart]]:
