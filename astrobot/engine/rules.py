@@ -150,13 +150,18 @@ class Card:
 
 
 @dataclass(frozen=True)
+class OrientationCard(Card):
+    leans: str = ""
+
+
+@dataclass(frozen=True)
 class Match:
     card: Card
     detail: str
 
     def as_dict(self) -> dict:
         c = self.card
-        return {"id": c.id, "title": c.title, "weight": c.weight, "detail": self.detail,
+        return {"id": c.id, "title": c.title, **({"leans": c.leans} if hasattr(c, "leans") else {}), "weight": c.weight, "detail": self.detail,
                 "effect": c.effect, "source": c.source, "phrasing": c.phrasing_en}
 
 
@@ -165,7 +170,8 @@ def load_domain(domain: str) -> dict:
     with open(KNOWLEDGE_DIR / f"{domain}.yaml", encoding="utf-8") as f:
         data = yaml.safe_load(f)
     data["cards"] = [Card(**card) for card in data.get("cards", [])]
-    for card in data["cards"]:
+    data["orientation_cards"] = [OrientationCard(**card) for card in data.get("orientation_cards", [])]
+    for card in data["cards"] + data["orientation_cards"]:
         if card.predicate not in PREDICATES:
             raise ValueError(f"{domain}: card {card.id} uses unknown predicate {card.predicate}")
     return data

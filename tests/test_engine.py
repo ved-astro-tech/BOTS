@@ -50,3 +50,15 @@ def test_rough_birth_time_caps_confidence(birth):
     ev = build_evidence(replace(birth, time_certainty="rough"), "career", now=NOW)
     assert all(w["confidence"] != "high" for wins in ev["future_windows"].values() for w in wins)
     assert any("not exact" in n for n in ev["notes"])
+
+
+def test_job_or_business_orientation():
+    from datetime import date, time
+    from astrobot.astro.ephemeris import BirthData
+    birth = BirthData(date(2002, 8, 7), time(16, 55), 28.9845, 77.7064, place="Meerut")
+    ori = build_evidence(birth, "career", now=NOW)["job_or_business"]
+    ids = {m["id"] for m in ori["matches"]}
+    assert {"ORI-J01", "ORI-J02", "ORI-B01", "ORI-B02"} <= ids   # Venus 6L in 10th, Rahu in 6th, Mercury 7L+10L, Saturn 3L in 7th
+    assert ori["leans"] in {"job", "business", "both"}
+    assert ori["running_dasha_activates"]["Venus"]["job"] is True
+    assert len(ori["eighth_house_planets"]) == 4

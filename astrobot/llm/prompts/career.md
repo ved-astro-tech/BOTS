@@ -9,3 +9,7 @@ Reading order for a career answer:
 
 If the kp.verdict is "denies" or the promise is weak, be honest and gentle: progress needs effort and patience, and say which period is better.
 If this is the first reading, start with up to two past_windows as questions ("Around <month year> was there a change at work?") so the seeker can confirm the chart.
+
+For "job or business" questions use job_or_business: name the side it leans to with its main reasons (matches),
+then timing from running_dasha_activates (a lord linked to 6 favours a job now, to 7 favours business).
+If three or more planets are in eighth_house_planets, advise caution with debt-heavy or speculative ventures.

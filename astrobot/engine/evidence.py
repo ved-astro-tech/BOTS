@@ -38,6 +38,31 @@ def kp_verdict(kp: KPChart, spec: dict) -> dict:
             "supporting_houses": yes, "obstructing_houses": no, "verdict": verdict}
 
 
+def orientation(chart: Chart, kp: KPChart, cfg: dict, running_lords: list[str]) -> dict | None:
+    """Job or business: card totals, the KP 10th cusp sub lord's links to 6 and 7, and which
+    of the two the running dasha lords activate."""
+    cards = cfg.get("orientation_cards")
+    if not cards:
+        return None
+    matches = evaluate(chart, cards)
+    totals = {"job": 0.0, "business": 0.0}
+    for m in matches:
+        totals[m.card.leans] += m.card.weight
+    csl = kp.cusp_sub_lord(cfg["kp"]["cusp"])
+    csl_houses = kp.significations(csl)
+    if 6 in csl_houses:
+        totals["job"] += 2
+    if 7 in csl_houses:
+        totals["business"] += 2
+    gap = totals["job"] - totals["business"]
+    leans = "job" if gap >= 2 else "business" if gap <= -2 else "both"
+    dasha = {p: {"job": 6 in chart.significations(p), "business": 7 in chart.significations(p)}
+             for p in dict.fromkeys(running_lords)}
+    return {"leans": leans, "totals": totals, "kp_cusp_sub_lord_houses": sorted(csl_houses),
+            "running_dasha_activates": dasha, "matches": [m.as_dict() for m in matches],
+            "eighth_house_planets": chart.occupants(8)}
+
+
 def likely_fields(chart: Chart, cfg: dict) -> list[dict]:
     key = cfg["key_house"]
     votes = Counter()
@@ -114,6 +139,7 @@ class Engine:
             "promise": promise(self.chart, self.cfg),
             "kp": kp,
             "likely_fields": likely_fields(self.chart, self.cfg),
+            "job_or_business": orientation(self.chart, self.kp, self.cfg, list(md.lords + ad.lords)),
             "current_dasha": {
                 "mahadasha": md.as_dict(), "antardasha": ad.as_dict(), "pratyantardasha": pd.as_dict(),
                 "lord_houses": {p: sorted(self.chart.significations(p)) for p in dict.fromkeys(pd.lords)},

@@ -274,3 +274,88 @@ cards:
     effect: Discipline, endurance, long service, large organisations.
     source: BPHS, karakas of the 10th house
     phrasing_en: A strong Saturn gives discipline and long-term success in work.
+
+# Job or business: each card leans one way. The evidence pack reports both totals plus the
+# running dasha lords' links to the 6th (service) and 7th (business), so the reading can weigh timing.
+orientation_cards:
+  - id: ORI-J01
+    title: 6th lord linked with the 10th
+    leans: job
+    predicate: lords_connected
+    params: {house_a: 6, house_b: 10}
+    weight: 3
+    effect: Career through service, employment and competition.
+    source: Phaladeepika and common practice, 6th house as service
+    phrasing_en: The lord of service is tied to your 10th house, which favours a job.
+  - id: ORI-J02
+    title: Strong malefic in the 6th
+    leans: job
+    predicate: planets_in_house
+    params: {house: 6, planets: [Rahu, Saturn, Mars, Sun]}
+    weight: 2
+    effect: Wins in competition, exams and interviews; thrives in organisations.
+    source: Upachaya principle (malefics do well in 3, 6, 10, 11)
+    phrasing_en: A strong planet in your 6th helps you beat competition, which suits employment.
+  - id: ORI-J03
+    title: 10th lord in the 6th
+    leans: job
+    predicate: lord_in_houses
+    params: {house: 10, houses: [6]}
+    weight: 3
+    effect: Work under others; service rather than ownership.
+    source: BPHS, Karma Bhava results
+    phrasing_en: Your 10th lord sits in the house of service, which points to a job.
+  - id: ORI-B01
+    title: 7th lord linked with the 10th
+    leans: business
+    predicate: lords_connected
+    params: {house_a: 7, house_b: 10}
+    weight: 3
+    effect: Business, trade or partnership as profession.
+    source: Common practice, 7th house as trade and partners
+    phrasing_en: Your house of business is tied to your 10th, so trade or partnership is in your chart.
+  - id: ORI-B02
+    title: 3rd lord linked with the 7th (enterprise)
+    leans: business
+    predicate: lords_connected
+    params: {house_a: 3, house_b: 7}
+    weight: 2
+    effect: Own initiative channelled into business.
+    source: Common practice, 3rd house as self-effort
+    phrasing_en: Your house of self-effort is tied to business, so enterprise comes naturally with time.
+  - id: ORI-B03
+    title: 10th lord in the 7th
+    leans: business
+    predicate: lord_in_houses
+    params: {house: 10, houses: [7]}
+    weight: 3
+    effect: Profession through trade, clients and partners.
+    source: BPHS, Karma Bhava results
+    phrasing_en: Your 10th lord in the 7th favours business and client work.
+  - id: ORI-B04
+    title: Benefic in the 7th
+    leans: business
+    predicate: planets_in_house
+    params: {house: 7, planets: [Mercury, Venus, Jupiter]}
+    weight: 2
+    effect: Good partners and dealings with the public.
+    source: Saravali, planets in the 7th
+    phrasing_en: A benefic in your 7th brings good partners and clients.
+  - id: ORI-B05
+    title: 7th and 11th lords linked
+    leans: business
+    predicate: lords_connected
+    params: {house_a: 7, house_b: 11}
+    weight: 2
+    effect: Gains through trade and partnerships.
+    source: Common practice
+    phrasing_en: Business and gains are linked in your chart.
+  - id: ORI-B06
+    title: Mercury strong (karaka of trade)
+    leans: business
+    predicate: planet_strength
+    params: {planet: Mercury, min: 0.75}
+    weight: 2
+    effect: Commercial sense and skill in trade.
+    source: BPHS, karakatva of Mercury
+    phrasing_en: A strong Mercury gives a good head for business.
