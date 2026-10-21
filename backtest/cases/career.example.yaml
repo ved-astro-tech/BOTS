@@ -1,0 +1,22 @@
+# FORMAT EXAMPLE ONLY. The person and events below are made up, so the score means nothing.
+# Real cases go in backtest/cases/career.yaml (not committed if they contain client data:
+# see .gitignore). Use consented client charts or AA/A-rated public charts.
+#
+# event types: job_start, promotion, recognition, business_start, job_change, transfer,
+#              relocation_for_work, job_loss, demotion, business_loss
+cases:
+  - id: example-001
+    source: fictional
+    birth:
+      date: 1990-01-15
+      time: "10:30"
+      lat: 28.6139
+      lon: 77.2090
+      tz: Asia/Kolkata
+      place: New Delhi
+      time_certainty: exact
+    events:
+      - {date: 2013-07-01, type: job_start, note: first job after graduation}
+      - {date: 2017-04-01, type: promotion, note: team lead}
+      - {date: 2020-05-15, type: job_loss, note: laid off}
+      - {date: 2021-02-01, type: job_change, note: joined a new company}

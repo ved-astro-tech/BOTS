@@ -1,0 +1,276 @@
+# Career domain: configuration and rule cards.
+#
+# Sources are cited at chapter level in our own words; verse numbers still to be added during review.
+# Weights are starting points for the baseline and get tuned against the backtest, never by feel.
+
+domain: career
+key_house: 10
+
+# Houses a dasha lord must signify for each kind of event, with relative weight.
+# Classical basis: 10th karma, 11th gains, 6th service, 2nd earnings, 1st self-effort (BPHS bhava chapters);
+# 12th from a house is its loss, so 9th (12th from 10th) and 5th (12th from 6th) mark breaks (KP practice).
+events:
+  rise:
+    description: new job, promotion, recognition, business start
+    houses: {10: 1.0, 11: 0.8, 6: 0.7, 2: 0.5, 1: 0.4}
+    against: setback
+  setback:
+    description: job loss, demotion, forced break, business loss
+    houses: {12: 1.0, 8: 0.9, 5: 0.6, 9: 0.5}
+    against: rise
+  change:
+    description: switching job or role, transfer, moving for work
+    houses: {10: 0.8, 11: 0.6, 6: 0.6, 3: 0.5, 12: 0.5, 9: 0.4, 5: 0.4}
+
+# Event types used in backtest cases and readings, mapped to the profiles above.
+event_types:
+  job_start: rise
+  promotion: rise
+  recognition: rise
+  business_start: rise
+  job_change: change
+  transfer: change
+  relocation_for_work: change
+  job_loss: setback
+  demotion: setback
+  business_loss: setback
+
+# Transit trigger: Jupiter and Saturn both touching these points (K.N. Rao's double transit).
+transit_points:
+  houses_from_lagna: [10]
+  houses_from_moon: [10]
+  lords_of: [10]
+
+kp:
+  cusp: 10
+  yes_houses: [2, 6, 10, 11]
+  no_houses: [5, 8, 12]
+
+# Nature of work by planet (Phaladeepika and Saravali on the 10th house; common practice).
+fields:
+  Sun: government, administration, politics, leadership roles, medicine
+  Moon: hospitality, nursing, public-facing work, liquids, travel, food
+  Mars: engineering, defence, police, surgery, real estate, sports
+  Mercury: commerce, accounts, writing, communication, IT, trading, teaching
+  Jupiter: teaching, law, finance, advisory, banking, religious or counselling work
+  Venus: arts, media, fashion, luxury goods, hospitality, beauty, vehicles
+  Saturn: industry, labour-intensive work, mining, oil, large organisations, judiciary, service
+  Rahu: technology, foreign companies, aviation, research, unconventional fields
+  Ketu: research, spirituality, coding, occult sciences, technical niche work
+
+cards:
+  - id: CAR-001
+    title: 10th lord in a kendra or trikona
+    predicate: lord_in_houses
+    params: {house: 10, houses: [1, 4, 5, 7, 9, 10]}
+    weight: 8
+    effect: Career rises through own effort and is visible to others.
+    source: BPHS, Karma Bhava (10th house) results
+    phrasing_en: Your 10th lord sits in a strong house, so effort in work shows clear results.
+
+  - id: CAR-002
+    title: 10th lord in the 8th or 12th
+    predicate: lord_in_houses
+    params: {house: 10, houses: [8, 12]}
+    weight: -8
+    effect: Obstacles, sudden changes or work far from home; progress comes after struggle.
+    source: BPHS, Karma Bhava results; 10th lord in dusthana
+    phrasing_en: Your 10th lord is in a hidden house, so career has ups and downs and often a change of place helps.
+
+  - id: CAR-003
+    title: 10th lord in the 6th
+    predicate: lord_in_houses
+    params: {house: 10, houses: [6]}
+    weight: 2
+    effect: Suits service, competition and problem-solving work; rise through hard work.
+    source: BPHS, Karma Bhava results
+    phrasing_en: Your 10th lord in the 6th favours service and competitive fields where hard work is rewarded.
+
+  - id: CAR-004
+    title: 10th lord strong by dignity (D1)
+    predicate: lord_strength
+    params: {house: 10, min: 0.75}
+    weight: 8
+    effect: Steady, respected career; the native holds position well.
+    source: BPHS, dignity of bhava lords
+    phrasing_en: Your 10th lord is strong in its sign, which gives a steady and respected career.
+
+  - id: CAR-005
+    title: 10th lord debilitated without cancellation (D1)
+    predicate: lord_dignity_is
+    params: {house: 10, dignities: [debilitated]}
+    weight: -8
+    effect: Career needs extra effort; position may feel insecure in weak periods.
+    source: BPHS, results of debilitated lords
+    phrasing_en: Your 10th lord is weak, so career needs patience and steady effort before it settles.
+
+  - id: CAR-006
+    title: 10th lord combust
+    predicate: lord_combust
+    params: {house: 10}
+    weight: -4
+    effect: Work goes unrecognised or authority figures overshadow the native.
+    source: Phaladeepika, combustion
+    phrasing_en: Your 10th lord is close to the Sun, so recognition may come late; keep good terms with seniors.
+
+  - id: CAR-007
+    title: Natural benefic in the 10th
+    predicate: planets_in_house
+    params: {house: 10, planets: [Jupiter, Venus, Mercury]}
+    weight: 5
+    effect: Good reputation and ethical work environment.
+    source: Saravali and Phaladeepika, planets in the 10th
+    phrasing_en: A benefic in your 10th house gives a good name at work.
+
+  - id: CAR-008
+    title: Sun or Mars in the 10th (directional strength)
+    predicate: planets_in_house
+    params: {house: 10, planets: [Sun, Mars]}
+    weight: 5
+    effect: Authority, leadership, drive; Sun and Mars get dig bala in the 10th.
+    source: BPHS, Shadbala (dig bala)
+    phrasing_en: Sun or Mars in your 10th gives leadership and drive at work.
+
+  - id: CAR-009
+    title: Saturn in the 10th
+    predicate: planets_in_house
+    params: {house: 10, planets: [Saturn]}
+    weight: 3
+    effect: Slow but lasting rise, heavy responsibility, success after 30s.
+    source: Saravali, Saturn in the 10th
+    phrasing_en: Saturn in your 10th gives a slow but lasting rise; the second half of career is stronger.
+
+  - id: CAR-010
+    title: Rahu in the 10th
+    predicate: planets_in_house
+    params: {house: 10, planets: [Rahu]}
+    weight: 3
+    effect: Ambition, unconventional or foreign-linked work, sudden rise.
+    source: Common practice (Rahu in upachaya)
+    phrasing_en: Rahu in your 10th brings strong ambition and success in modern or foreign-linked work.
+
+  - id: CAR-011
+    title: Ketu in the 10th
+    predicate: planets_in_house
+    params: {house: 10, planets: [Ketu]}
+    weight: -2
+    effect: Detachment from career, frequent changes, technical or spiritual leaning.
+    source: Common practice
+    phrasing_en: Ketu in your 10th can make you restless in jobs; specialised or technical work suits you best.
+
+  - id: CAR-012
+    title: Jupiter aspects the 10th
+    predicate: house_aspected_by
+    params: {house: 10, planets: [Jupiter]}
+    weight: 5
+    effect: Protection and guidance in career; good mentors.
+    source: BPHS, aspects of Jupiter
+    phrasing_en: Jupiter's aspect on your 10th house protects your career and brings good mentors.
+
+  - id: CAR-013
+    title: Lagna lord strong and well placed
+    predicate: lord_placed_and_strong
+    params: {house: 1, houses: [1, 4, 5, 7, 9, 10, 11], min: 0.6}
+    weight: 5
+    effect: Self-confidence and health to pursue a career.
+    source: BPHS, Lagna Bhava results
+    phrasing_en: Your lagna lord is strong, which gives the confidence to build a career.
+
+  - id: CAR-014
+    title: Dharma-Karmadhipati yoga (9th and 10th lords linked)
+    predicate: lords_connected
+    params: {house_a: 9, house_b: 10}
+    weight: 8
+    effect: Fortune supports career; rise through right action and mentors.
+    source: BPHS, Raja Yoga chapter
+    phrasing_en: The lords of fortune and career are joined in your chart, a classic Raja Yoga for career.
+
+  - id: CAR-015
+    title: Raja yoga (kendra lord linked with trikona lord)
+    predicate: raja_yoga
+    params: {}
+    weight: 6
+    effect: Authority and status in the dashas of the planets forming the yoga.
+    source: BPHS, Raja Yoga chapter
+    phrasing_en: Your chart has a Raja Yoga, which brings status when its planets run their dashas.
+
+  - id: CAR-016
+    title: 10th and 11th lords linked
+    predicate: lords_connected
+    params: {house_a: 10, house_b: 11}
+    weight: 5
+    effect: Profession gives gains; income grows with position.
+    source: Phaladeepika, 10th and 11th house combinations
+    phrasing_en: Your career and income lords are linked, so a rise in work brings a rise in income.
+
+  - id: CAR-017
+    title: 10th lord strong in Dashamsha (D10)
+    predicate: lord_strength
+    params: {house: 10, min: 0.75, varga: D10}
+    weight: 6
+    effect: Career promise confirmed in the divisional chart of profession.
+    source: BPHS, Shodashavarga (D10 for power and position)
+    phrasing_en: Your Dashamsha chart confirms a strong career.
+
+  - id: CAR-018
+    title: 10th lord debilitated in Dashamsha (D10)
+    predicate: lord_dignity_is
+    params: {house: 10, dignities: [debilitated], varga: D10}
+    weight: -6
+    effect: Career promise weakened; expect more effort for results.
+    source: BPHS, Shodashavarga
+    phrasing_en: Your Dashamsha chart shows career needs extra effort to deliver.
+
+  - id: CAR-019
+    title: D10 lagna lord in a kendra or trikona of D10
+    predicate: lord_in_houses
+    params: {house: 1, houses: [1, 4, 5, 7, 9, 10], varga: D10}
+    weight: 4
+    effect: Professional self is strong; good standing at work.
+    source: BPHS, Shodashavarga
+    phrasing_en: In your Dashamsha the professional self is well placed.
+
+  - id: CAR-020
+    title: 10th lord vargottama
+    predicate: lord_vargottama
+    params: {house: 10}
+    weight: 4
+    effect: The 10th lord gives consistent results; career promise is firm.
+    source: BPHS, vargottama
+    phrasing_en: Your 10th lord is vargottama, which makes your career promise firm.
+
+  - id: CAR-021
+    title: Amatyakaraka strong
+    predicate: karaka_strength
+    params: {karaka: Amatyakaraka, min: 0.75}
+    weight: 5
+    effect: The planet of profession (Jaimini) is strong; capable in chosen field.
+    source: Jaimini Sutras, chara karakas
+    phrasing_en: Your Amatyakaraka, the planet of profession, is strong.
+
+  - id: CAR-022
+    title: Amatyakaraka debilitated
+    predicate: karaka_dignity_is
+    params: {karaka: Amatyakaraka, dignities: [debilitated]}
+    weight: -5
+    effect: Choice of profession may not suit the native at first; later correction.
+    source: Jaimini Sutras, chara karakas
+    phrasing_en: Your Amatyakaraka is weak, so the first career choice may need correction later.
+
+  - id: CAR-023
+    title: Sun strong (karaka of authority)
+    predicate: planet_strength
+    params: {planet: Sun, min: 0.75}
+    weight: 3
+    effect: Authority, government favour, leadership.
+    source: BPHS, karakas of the 10th house
+    phrasing_en: A strong Sun supports authority and leadership roles.
+
+  - id: CAR-024
+    title: Saturn strong (karma karaka)
+    predicate: planet_strength
+    params: {planet: Saturn, min: 0.75}
+    weight: 3
+    effect: Discipline, endurance, long service, large organisations.
+    source: BPHS, karakas of the 10th house
+    phrasing_en: A strong Saturn gives discipline and long-term success in work.
