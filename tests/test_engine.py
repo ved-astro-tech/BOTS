@@ -62,3 +62,6 @@ def test_job_or_business_orientation():
     assert ori["leans"] in {"job", "business", "both"}
     assert ori["running_dasha_activates"]["Venus"]["job"] is True
     assert len(ori["eighth_house_planets"]) == 4
+    timeline = {a["lords"][1]: a for a in ori["antardasha_timeline"]}
+    assert timeline["Venus"]["job"] and not timeline["Venus"]["business"]
+    assert timeline["Jupiter"]["business"]

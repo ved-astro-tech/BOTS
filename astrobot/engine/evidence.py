@@ -38,7 +38,8 @@ def kp_verdict(kp: KPChart, spec: dict) -> dict:
             "supporting_houses": yes, "obstructing_houses": no, "verdict": verdict}
 
 
-def orientation(chart: Chart, kp: KPChart, cfg: dict, running_lords: list[str]) -> dict | None:
+def orientation(chart: Chart, kp: KPChart, cfg: dict, running_lords: list[str],
+                antardashas: list | None = None) -> dict | None:
     """Job or business: card totals, the KP 10th cusp sub lord's links to 6 and 7, and which
     of the two the running dasha lords activate."""
     cards = cfg.get("orientation_cards")
@@ -58,8 +59,12 @@ def orientation(chart: Chart, kp: KPChart, cfg: dict, running_lords: list[str]) 
     leans = "job" if gap >= 2 else "business" if gap <= -2 else "both"
     dasha = {p: {"job": 6 in chart.significations(p), "business": 7 in chart.significations(p)}
              for p in dict.fromkeys(running_lords)}
+    # The Mahadasha sets the theme; each Antardasha lord delivers its own houses within it,
+    # so list which Antardashas of the running Mahadasha open the job (6) or business (7) house.
+    timeline = [{**ad.as_dict(), "job": 6 in chart.significations(ad.lord),
+                 "business": 7 in chart.significations(ad.lord)} for ad in antardashas or []]
     return {"leans": leans, "totals": totals, "kp_cusp_sub_lord_houses": sorted(csl_houses),
-            "running_dasha_activates": dasha, "matches": [m.as_dict() for m in matches],
+            "running_dasha_activates": dasha, "antardasha_timeline": timeline, "matches": [m.as_dict() for m in matches],
             "eighth_house_planets": chart.occupants(8)}
 
 
@@ -139,7 +144,8 @@ class Engine:
             "promise": promise(self.chart, self.cfg),
             "kp": kp,
             "likely_fields": likely_fields(self.chart, self.cfg),
-            "job_or_business": orientation(self.chart, self.kp, self.cfg, list(md.lords + ad.lords)),
+            "job_or_business": orientation(self.chart, self.kp, self.cfg, list(md.lords + ad.lords),
+                                           self.tree.antardashas(md)),
             "current_dasha": {
                 "mahadasha": md.as_dict(), "antardasha": ad.as_dict(), "pratyantardasha": pd.as_dict(),
                 "lord_houses": {p: sorted(self.chart.significations(p)) for p in dict.fromkeys(pd.lords)},

@@ -11,5 +11,6 @@ If the kp.verdict is "denies" or the promise is weak, be honest and gentle: prog
 If this is the first reading, start with up to two past_windows as questions ("Around <month year> was there a change at work?") so the seeker can confirm the chart.
 
 For "job or business" questions use job_or_business: name the side it leans to with its main reasons (matches),
-then timing from running_dasha_activates (a lord linked to 6 favours a job now, to 7 favours business).
+then timing: the Mahadasha sets the overall theme, the running Antardasha decides what happens now
+(linked to 6 favours a job, to 7 favours business), and antardasha_timeline shows when business-type periods come.
 If three or more planets are in eighth_house_planets, advise caution with debt-heavy or speculative ventures.
