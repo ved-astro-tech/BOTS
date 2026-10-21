@@ -50,3 +50,12 @@ def test_backtest_runs_on_example_cases():
     assert len(results) == 4
     assert all(0 <= r.percentile <= 1 for r in results)
     assert "Mean percentile" in backtest.report(results)
+
+
+def test_reading_without_api_key_is_a_clear_503(monkeypatch):
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
+    monkeypatch.setenv("LLM_PROVIDER", "openai")
+    client = TestClient(api.app)
+    birth = {"date": "1990-01-15", "time": "10:30", "latitude": 28.6139, "longitude": 77.209}
+    r = client.post("/v1/career/reading", json={"birth": birth, "question": "Job change?"})
+    assert r.status_code == 503 and "OPENAI_API_KEY" in r.json()["detail"]

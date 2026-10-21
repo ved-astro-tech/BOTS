@@ -10,6 +10,7 @@ from pydantic import BaseModel, Field
 from astrobot.astro.ephemeris import BirthData
 from astrobot.engine.evidence import build_evidence
 from astrobot.engine.rules import KNOWLEDGE_DIR
+from astrobot.llm.provider import ProviderNotConfigured
 from astrobot.llm.reading import answer
 
 app = FastAPI(title="Astro bots", version="0.1.0")
@@ -59,5 +60,8 @@ def evidence(domain: str, body: EvidenceIn) -> dict:
 @app.post("/v1/{domain}/reading")
 def reading(domain: str, body: ReadingIn) -> dict:
     _check(domain)
-    result = answer(body.birth.to_birth(), body.question, domain, body.history, now=body.as_of)
+    try:
+        result = answer(body.birth.to_birth(), body.question, domain, body.history, now=body.as_of)
+    except ProviderNotConfigured as e:
+        raise HTTPException(503, str(e)) from e
     return {"reply": result.text, "evidence": result.evidence}
