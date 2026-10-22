@@ -217,9 +217,15 @@ class Phases:
             jump = nxt.percentile - prev.percentile
             rows.append({"date": nxt.period.start.date().isoformat(), "from": "/".join(prev.period.lords),
                          "to": "/".join(nxt.period.lords), "kind": "easier" if jump > 0 else "harder",
-                         "jump": round(jump, 2)})
+                         "jump": round(jump, 2), "themes": nxt.themes,
+                         "why": self._why(nxt.period.lords[-1], jump > 0)})
         rows = [r for r in sorted(rows, key=lambda r: -abs(r["jump"])) if abs(r["jump"]) >= 0.2][:n]
         return sorted(rows, key=lambda r: r["date"])
+
+    def _why(self, lord: str, better: bool) -> str | None:
+        """The lord's strongest factor pointing the same way as the shift, in plain words."""
+        same = [f for f in self.quality[lord].factors if (f.value > 0) == better]
+        return f"{same[0].text} ({same[0].source})" if same else None
 
     def summary(self) -> dict:
         cur = self.current()

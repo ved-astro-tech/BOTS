@@ -29,8 +29,8 @@ KEYWORDS = [
     ("profession", r"\b(lawyer|advocate|doctor|ca|chartered|architect|consultant|freelanc\w*|cricket\w*|athlete)\b"),
     ("private", r"\b(job|private|company|corporate|mnc|it|software|engineer|sales|bank|employee|designer)\b"),
 ]
-YES = r"\b(yes|haan|ha|right|correct|true|easier|better|good|improv\w*|relief)\b"
-NO = r"\b(no|nahi|harder|worse|tough|bad|difficult|struggl\w*|stress)\b"
+YES = r"\b(yes|haan|ha|right|correct|true|sahi)\b"
+NO = r"\b(no|nahi|not really|wrong|galat)\b"
 
 FRAMING = {
     "government": ("posting, promotion or recognition", "transfers, pressure from seniors or delays in promotion"),
@@ -39,7 +39,7 @@ FRAMING = {
     "profession": ("more clients and a stronger name", "fewer clients, disputes or tiring workload"),
     "politics": ("support, visibility and new positions", "opposition, setbacks and loss of support"),
     "seeking": ("getting a job offer", "rejections and waiting; keep preparing"),
-    "student": ("good results and the first opening", "distraction and slow progress; keep steady"),
+    "student": ("good results, learning and first openings", "distraction and slow progress in studies"),
 }
 
 
@@ -96,9 +96,28 @@ def start(birth: dict, as_of: str | None = None) -> tuple[dict, str]:
     return state, "\n".join(lines)
 
 
-def _past_question(check: dict) -> str:
-    return (f"Around {_month(check['date'])} a new period began for you ({check['to']}). "
-            "Did life, especially work, become easier or harder from then?")
+def _past_question(check: dict, sector: str, born: str) -> str:
+    """State what the chart shows for that shift first, then ask the person to confirm it."""
+    age = (date.fromisoformat(check["date"]) - date.fromisoformat(born)).days / 365.25
+    good, bad = FRAMING["student" if age < 22 else sector]
+    if check["kind"] == "easier":
+        claim = f"things became lighter than the period before, and for your work it supported {good}"
+    else:
+        claim = f"things became heavier than the period before, and for your work it could bring {bad}"
+    why = f" The reason in your chart: {check['why']}." if check.get("why") else ""
+    return (f"From around {_month(check['date'])} your {check['to']} period began. Your chart shows {claim}. "
+            f"The main areas in focus were {', '.join(check['themes'][:2])}.{why}\n"
+            "Did you feel this? A simple yes or no is enough, or tell me what happened.")
+
+
+def _heard(text: str, expected: str) -> str:
+    t = text.lower()
+    if re.search(r"\b(easier|better|lighter|improv\w*|relief)\b", t):
+        return "easier"
+    if re.search(r"\b(harder|worse|heavier|tough|difficult|struggl\w*|stress)\b", t):
+        return "harder"
+    other = "harder" if expected == "easier" else "easier"
+    return expected if re.search(YES, t) else other if re.search(NO, t) else "unclear"
 
 
 def reply(state: dict, text: str) -> tuple[dict, str]:
@@ -118,16 +137,17 @@ def reply(state: dict, text: str) -> tuple[dict, str]:
             state["step"] = "reading"
             return state, reading(state, ev)
         state["step"] = "past"
-        return state, "Thank you, that helps.\n" + _past_question(state["checks"][0])
+        return state, "Thank you, that helps.\n" + _past_question(state["checks"][0], sector, state["birth"]["date"])
     if step == "past":
         check = state["checks"][state["check_i"]]
-        said = "easier" if re.search(YES, text.lower()) else "harder" if re.search(NO, text.lower()) else "unclear"
+        said = _heard(text, check["kind"])
         check["said"] = said
         log(state, "past_check", date=check["date"], periods=f"{check['from']}->{check['to']}",
             expected=check["kind"], said=said)
         state["check_i"] += 1
         if state["check_i"] < len(state["checks"]):
-            return state, _past_question(state["checks"][state["check_i"]])
+            return state, _past_question(state["checks"][state["check_i"]], state["answers"]["occupation"]["sector"],
+                                        state["birth"]["date"])
         state["step"] = "reading"
         return state, reading(state, evidence(state))
     return state, open_question(state, text)
