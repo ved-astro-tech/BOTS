@@ -25,7 +25,7 @@ KEYWORDS = [
     ("student", r"\b(student|studying|college|preparing|exam)\b"),
     ("government", r"\b(government|govt|sarkari|ias|pcs|police|army|railway|psu|public sector|judge|court|officer)\b"),
     ("politics", r"\b(politic\w*|neta|mla|mp|party)\b"),
-    ("business", r"\b(business|own (firm|company|shop)|shop|trade|trader|startup|founder|real estate|dealer)\b"),
+    ("business", r"\b(business|my own|own (\w+ )*(firm|company|shop)|pvt|private limited|shop|trade|trader|startup|founder|real estate|dealer)\b"),
     ("profession", r"\b(lawyer|advocate|doctor|ca|chartered|architect|consultant|freelanc\w*|cricket\w*|athlete)\b"),
     ("private", r"\b(job|private|company|corporate|mnc|it|software|engineer|sales|bank|employee|designer)\b"),
 ]
