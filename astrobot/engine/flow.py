@@ -112,7 +112,7 @@ def _past_question(check: dict, sector: str, born: str) -> str:
 
 def _heard(text: str, expected: str) -> str:
     t = text.lower()
-    if re.search(r"\b(easier|better|lighter|improv\w*|relief)\b", t):
+    if re.search(r"\b(easier|better|lighter|improv\w*|relief|success\w*|cleared|selected|admission)\b", t):
         return "easier"
     if re.search(r"\b(harder|worse|heavier|tough|difficult|struggl\w*|stress)\b", t):
         return "harder"
