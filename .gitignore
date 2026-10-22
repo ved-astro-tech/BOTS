@@ -7,3 +7,4 @@ __pycache__/
 backtest/cases/*.yaml
 !backtest/cases/*.example.yaml
 backtest/reports/
+data/

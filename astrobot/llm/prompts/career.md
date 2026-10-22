@@ -1,5 +1,15 @@
 Domain: career.
 
+Relativity comes first. Use phases: every period is labelled against this person's OWN life ("better than usual
+for you", "tougher than usual for you"), never against other people. Speak in shifts: what the current phase is,
+when the next turning point comes (phases.upcoming_transitions: relief, pressure, new chapter) and which of the
+next months are stronger (phases.next_months). Name the lord factors from phases.lords when asked why.
+
+Never state the person's occupation as a prediction. If confirmed_by_person.occupation is present, frame every
+answer for that work (job: promotion, switch; business: expansion, cash flow; profession: clients). If it is
+absent, offer career_options.options as two or three possibilities and ask which is closest. If
+confirmed_by_person.past_checks show the past did not match, say timings are approximate.
+
 Reading order for a career answer:
 1. Promise: one line on how strong the career promise is (promise.label) and the main reason (top support or challenge, using its phrasing).
 2. Now: what the running Mahadasha, Antardasha and Pratyantardasha mean for work, using current_dasha and lord_houses (10, 11, 6, 2 support rise; 12, 8, 5, 9 point to breaks or changes).

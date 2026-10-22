@@ -21,8 +21,7 @@ from __future__ import annotations
 from functools import lru_cache
 
 from astrobot.astro.chart import DIGNITY_SCORE, Chart
-from astrobot.astro.constants import DASHA_ORDER, DASHA_TOTAL, DASHA_YEARS, NAK_SPAN
-from astrobot.astro.kp import KPChart, star_and_sub_lord
+from astrobot.astro.kp import KPChart, star_and_sub_lord, sub_sub_lord
 from backtest.nadi_cards import GOV, main as score
 
 STRONG = {"exalted", "own", "moolatrikona"}
@@ -46,24 +45,6 @@ def house_strength(c: Chart, h: int) -> float:
 
 def karmesha_d10_house(c: Chart) -> int:
     return c.house(c.lord(10), "D10")
-
-
-def sub_sub_lord(lon: float) -> str:
-    star, sub = star_and_sub_lord(lon)
-    nak_start = int((lon % 360) // NAK_SPAN) * NAK_SPAN
-    cursor = nak_start
-    s = DASHA_ORDER.index(star)
-    for lord in DASHA_ORDER[s:] + DASHA_ORDER[:s]:
-        width = NAK_SPAN * DASHA_YEARS[lord] / DASHA_TOTAL
-        if lord == sub:
-            break
-        cursor += width
-    k = DASHA_ORDER.index(sub)
-    for lord in DASHA_ORDER[k:] + DASHA_ORDER[:k]:
-        cursor += width * DASHA_YEARS[lord] / DASHA_TOTAL
-        if (lon % 360) < cursor - 1e-9:
-            return lord
-    return DASHA_ORDER[k - 1]
 
 
 @lru_cache(maxsize=4096)

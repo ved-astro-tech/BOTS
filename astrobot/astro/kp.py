@@ -24,6 +24,25 @@ def star_and_sub_lord(longitude: float) -> tuple[str, str]:
     return star, DASHA_ORDER[start - 1]
 
 
+def sub_sub_lord(lon: float) -> str:
+    """Third-level division: the sub is split again in Vimshottari proportions, starting from the sub lord."""
+    star, sub = star_and_sub_lord(lon)
+    nak_start = int((lon % 360) // NAK_SPAN) * NAK_SPAN
+    cursor = nak_start
+    s = DASHA_ORDER.index(star)
+    for lord in DASHA_ORDER[s:] + DASHA_ORDER[:s]:
+        width = NAK_SPAN * DASHA_YEARS[lord] / DASHA_TOTAL
+        if lord == sub:
+            break
+        cursor += width
+    k = DASHA_ORDER.index(sub)
+    for lord in DASHA_ORDER[k:] + DASHA_ORDER[:k]:
+        cursor += width * DASHA_YEARS[lord] / DASHA_TOTAL
+        if (lon % 360) < cursor - 1e-9:
+            return lord
+    return DASHA_ORDER[k - 1]
+
+
 @dataclass
 class KPChart:
     cusps: list[float]           # sidereal (KP ayanamsa), index 0 = cusp 1

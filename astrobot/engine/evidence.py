@@ -13,7 +13,8 @@ from astrobot.astro.constants import PLANETS, SIGN_LORDS, SIGNS
 from astrobot.astro.dasha import DashaTree
 from astrobot.astro.ephemeris import BirthData
 from astrobot.astro.kp import KPChart, star_and_sub_lord
-from astrobot.engine import kp_career, timing
+from astrobot.engine import career_options, kp_career, timing
+from astrobot.engine.phases import Phases
 from astrobot.engine.rules import evaluate, load_domain
 
 YEAR = timedelta(days=365.25)
@@ -178,7 +179,7 @@ class Engine:
 
         key = self.cfg["key_house"]
         lord = self.chart.lord(key)
-        return {
+        pack = {
             "domain": self.cfg["domain"],
             "as_of": now.date().isoformat(),
             "birth": {"name": self.birth.name, "date": self.birth.date.isoformat(),
@@ -209,6 +210,10 @@ class Engine:
             "transit_points": {SIGNS[s]: w for s, w in sorted(self.points.items())},
             "notes": _notes(self.birth.time_certainty),
         }
+        pack["phases"] = Phases(self.chart, self.tree, now).summary()
+        if self.cfg["domain"] == "career":
+            pack["career_options"] = career_options.options(self.chart, self.kp, pack)
+        return pack
 
 
 def _notes(certainty: str) -> list[str]:

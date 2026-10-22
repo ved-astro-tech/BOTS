@@ -8,6 +8,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, Field
 
 from astrobot.astro.ephemeris import BirthData
+from astrobot.engine import flow
 from astrobot.engine.evidence import build_evidence
 from astrobot.engine.rules import KNOWLEDGE_DIR
 from astrobot.llm.provider import ProviderNotConfigured
@@ -65,3 +66,27 @@ def reading(domain: str, body: ReadingIn) -> dict:
     except ProviderNotConfigured as e:
         raise HTTPException(503, str(e)) from e
     return {"reply": result.text, "evidence": result.evidence}
+
+
+class ChatStartIn(BaseModel):
+    birth: BirthIn
+    as_of: date | None = None
+
+
+class ChatReplyIn(BaseModel):
+    state: dict
+    text: str
+
+
+@app.post("/v1/career/chat/start")
+def chat_start(body: ChatStartIn) -> dict:
+    """First message: 2-3 career guesses to confirm. Send the returned state back with each reply."""
+    birth = body.birth.model_dump(mode="json")
+    state, text = flow.start(birth, body.as_of.isoformat() if body.as_of else None)
+    return {"reply": text, "state": state}
+
+
+@app.post("/v1/career/chat/reply")
+def chat_reply(body: ChatReplyIn) -> dict:
+    state, text = flow.reply(body.state, body.text)
+    return {"reply": text, "state": state}
