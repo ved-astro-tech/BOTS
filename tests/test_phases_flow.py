@@ -61,7 +61,8 @@ def test_flow_runs_end_to_end_without_llm(tmp_path, monkeypatch):
     state, text = flow.start(BIRTH, "2026-10-21")
     assert "1." in text and "2." in text and state["step"] == "confirm"
     state, text = flow.reply(state, "private company job")
-    assert state["step"] == "questions" and "cannot decide your direction" in text
+    assert state["step"] == "questions" and "Compared with the rest of your own life" in text
+    assert "option" not in text and "indication" not in text
     state, text = flow.reply(state, "When will I get a promotion?")
     assert "Compared with the rest of your own life" in text and "KP" in text
     state, text = flow.reply(state, "I feel stuck and worried")

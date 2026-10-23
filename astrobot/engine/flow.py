@@ -48,8 +48,8 @@ EVENTS = [  # timing question -> (KP outcome, Vimshottari window kind)
 ]
 KP_OUTCOME = {"government": "government", "private": "job", "business": "business", "profession": "business",
               "seeking": "job", "student": "job"}
-LIMIT = ("A chart shows tendencies with many possibilities, so I cannot decide your direction for you. "
-         "What it shows clearly is when your periods are relatively stronger or tougher, and that is where I can help most.")
+LIMIT = ("The final choice of path is yours; what your chart shows clearly is which periods favour a move and "
+         "which ask for patience.")
 
 FRAMING = {
     "government": ("posting, promotion or recognition", "transfers, pressure from seniors or delays in promotion"),
@@ -130,8 +130,7 @@ def reply(state: dict, text: str) -> tuple[dict, str]:
         log(state, "occupation", sector=sector, words=text, offered=state.get("offered"),
             first_option_right=bool(state.get("offered")) and state["offered"][0] == sector)
         state["step"] = "questions"
-        return state, "Thank you, that helps.\n" + direction_text(state, evidence(state)) + \
-            "\nWhat is on your mind about your career? Ask as many questions as you like."
+        return state, answer(state, text, "first_reading")
     return state, answer(state, text)
 
 
@@ -147,24 +146,23 @@ def direction(state: dict, ev: dict) -> dict:
            "supported" if sector in ranked else "weaker")
     return {"sector": sector, "fit": fit, "chart_options": ranked, "kp_outcome": outcome, "kp_promised": kp_ok,
             "promise": ev["promise"]["label"], "fields": [f["fields"].split(",")[0] for f in ev["career_options"]["fields"]],
+            "reasons": next((o["reasons"] for o in ev["career_options"]["options"] if o["sector"] == sector), []),
             "limit": LIMIT}
 
 
 def direction_text(state: dict, ev: dict) -> str:
+    """One astrologer's line tying the person's work to their chart; no talk of method or ranking."""
     d = direction(state, ev)
-    top = ev["career_options"]["options"][0]["text"]
-    lines = {
-        "strongest": "Broadly, you are in the right direction: this is the strongest indication in your chart.",
-        "supported": f"Broadly, this path is supported by your chart, though its first indication is {top}.",
-        "weaker": (f"Your present path is not the chart's main indication (that is {top}). It can still work, "
-                   "but results come with more effort, so use your stronger periods well."),
-        "aiming": f"For the work you are preparing for, your chart's first indication is {top}.",
-    }[d["fit"]]
-    out = [lines, f"Your overall career promise is {d['promise']}, and the work suits areas like {', '.join(d['fields'])}."]
-    if d["kp_promised"] is not None:
-        out.append("KP also " + ("supports" if d["kp_promised"] else "does not strongly support") + " this line of work.")
-    out.append(LIMIT)
-    return " ".join(out[:3]) + "\n" + out[-1]
+    reason = d["reasons"][0]["rule"] if d["reasons"] else None
+    if d["fit"] == "aiming":
+        line = f"Your chart supports aiming for {ev['career_options']['options'][0]['text']}."
+    elif d["fit"] == "weaker":
+        line = "Your work asks for more effort from you than usual, but it can give you a steady rise."
+    else:
+        line = "Your chart supports the work you do" + (f": {reason}." if reason else ".")
+        if d["kp_promised"]:
+            line += " KP confirms it."
+    return f"{line} Your overall career promise is {d['promise']}."
 
 
 def focus(state: dict, ev: dict, kind: str, text: str) -> dict:
@@ -172,7 +170,8 @@ def focus(state: dict, ev: dict, kind: str, text: str) -> dict:
     sector = state["answers"]["occupation"]["sector"]
     ph = ev["phases"]
     f = {"intent": kind, "direction": direction(state, ev), "direction_text": direction_text(state, ev), "now": ph["current"], "next_weeks": ph["next_weeks"],
-         "next_months": ph["next_months"], "upcoming_transitions": ph["upcoming_transitions"]}
+         "next_months": ph["next_months"], "upcoming_transitions": ph["upcoming_transitions"],
+         "for_their_work": dict(zip(("good_periods_bring", "tough_periods_bring"), FRAMING[sector]))}
     if kind == "timing":
         event = next((e for pattern, e in EVENTS if re.search(pattern, text.lower())), None)
         outcome = event if event in ("business", "government") else KP_OUTCOME.get(sector, "job")
@@ -183,11 +182,11 @@ def focus(state: dict, ev: dict, kind: str, text: str) -> dict:
     return f
 
 
-def answer(state: dict, text: str) -> str:
+def answer(state: dict, text: str, kind: str | None = None) -> str:
     from astrobot.llm.provider import ProviderNotConfigured, get_provider
     from astrobot.llm.reading import system_prompt
     ev = evidence(state)
-    kind = intent(text)
+    kind = kind or intent(text)
     ev["focus"] = focus(state, ev, kind, text)
     ev["confirmed_by_person"] = {"occupation": state["answers"].get("occupation")}
     try:
@@ -236,7 +235,9 @@ def template(state: dict, f: dict) -> str:
         for w in f["setback_windows"]:
             lines.append(f"Go slower from {_month(w['start'])} to {_month(w['end'])}, which may bring {bad}.")
     elif f["intent"] == "direction":
-        lines.insert(0, f["direction_text"])
+        lines[:0] = [f["direction_text"], LIMIT]
+    elif f["intent"] == "first_reading":
+        lines.insert(0, "Thank you. " + f["direction_text"])
     else:
         if cur["percentile"] <= 0.4:
             relief = next((t for t in f["upcoming_transitions"] if t["kind"] == "relief"), None)
