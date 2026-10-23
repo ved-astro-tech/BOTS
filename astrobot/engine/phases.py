@@ -183,21 +183,34 @@ class Phases:
                         "jump": round(jump, 2), "past": nxt.period.start <= self.now})
         return out
 
+    def _sub_phases(self, parent: Period, subs: list[Period], base: float) -> list[Phase]:
+        """Score each sub-period from its parent's score plus its own lord, ranked within the parent only."""
+        rows = []
+        for sub in subs:
+            rel = ad_from_md(self.chart, parent.lord, sub.lord)
+            bonus = 0 if sub.lord == parent.lord else 1 if rel["nature"] == "supportive" else \
+                -1 if rel["nature"] == "obstructed" else 0
+            rows.append(Phase(sub, base + self.quality[sub.lord].score + bonus, ad_from_md=rel,
+                              themes=themes(self.chart, [sub.lord])))
+        _percentiles(rows)
+        return rows
+
+    def _upcoming(self, rows: list[Phase], days: float) -> list[dict]:
+        horizon = self.now + timedelta(days=days)
+        return [p.as_dict() for p in rows if p.period.end > self.now and p.period.start < horizon]
+
     def pratyantardashas(self, months: int = 12) -> list[dict]:
         """Sub-periods for the next months, ranked within the running Antardasha only (relative again)."""
         md, ad, _ = self.tree.at(self.now)
-        pds = self.tree.pratyantardashas(ad)
         base, _ = self.score(md.lord, ad.lord)
-        rows = []
-        for pd in pds:
-            rel = ad_from_md(self.chart, ad.lord, pd.lord)
-            bonus = 0 if pd.lord == ad.lord else 1 if rel["nature"] == "supportive" else \
-                -1 if rel["nature"] == "obstructed" else 0
-            rows.append(Phase(pd, base + self.quality[pd.lord].score + bonus, ad_from_md=rel,
-                              themes=themes(self.chart, [pd.lord])))
-        _percentiles(rows)
-        horizon = self.now + timedelta(days=30.44 * months)
-        return [p.as_dict() for p in rows if p.period.end > self.now and p.period.start < horizon]
+        return self._upcoming(self._sub_phases(ad, self.tree.pratyantardashas(ad), base), 30.44 * months)
+
+    def sookshmas(self, weeks: int = 8) -> list[dict]:
+        """Sookshma dashas for the next weeks, ranked within the running Pratyantardasha: how the coming days feel."""
+        md, ad, pd = self.tree.at(self.now)
+        base = next(p.score for p in self._sub_phases(ad, self.tree.pratyantardashas(ad), self.score(md.lord, ad.lord)[0])
+                    if p.period.lords == pd.lords)
+        return self._upcoming(self._sub_phases(pd, self.tree.sookshmas(pd), base), 7 * weeks)
 
     def mahadashas(self) -> list[dict]:
         rows = [Phase(md, self.quality[md.lord].score) for md in self.tree.mds
@@ -233,7 +246,7 @@ class Phases:
         return {"method": "relative to this person's own adult periods (Antardasha level)",
                 "current": cur.as_dict(),
                 "lords": {l: q.as_dict() for l, q in self.quality.items() if l in cur.period.lords},
-                "next_months": self.pratyantardashas(),
+                "next_months": self.pratyantardashas(), "next_weeks": self.sookshmas(),
                 "upcoming_transitions": upcoming, "past_checks": self.past_checks(),
                 "mahadashas": self.mahadashas(),
                 "assumptions": ["Each factor counts +1 or -1 with equal weight; the books give no weights.",

@@ -13,7 +13,7 @@ from astrobot.astro.constants import DASHA_ORDER, DASHA_TOTAL, DASHA_YEARS, DAYS
 
 @dataclass(frozen=True)
 class Period:
-    lords: tuple[str, ...]  # (MD,) or (MD, AD) or (MD, AD, PD)
+    lords: tuple[str, ...]  # (MD,) up to (MD, AD, PD, SD)
     start: datetime
     end: datetime
 
@@ -23,7 +23,7 @@ class Period:
 
     @property
     def level(self) -> str:
-        return ("MD", "AD", "PD")[len(self.lords) - 1]
+        return ("MD", "AD", "PD", "SD")[len(self.lords) - 1]
 
     def contains(self, moment: datetime) -> bool:
         return self.start <= moment < self.end
@@ -75,6 +75,9 @@ class DashaTree:
 
     def pratyantardashas(self, ad: Period) -> list[Period]:
         return _subdivide(ad)
+
+    def sookshmas(self, pd: Period) -> list[Period]:
+        return _subdivide(pd)
 
     def at(self, moment: datetime) -> tuple[Period, Period, Period]:
         md = next(p for p in self.mds if p.contains(moment))

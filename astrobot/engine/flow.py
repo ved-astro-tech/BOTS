@@ -1,11 +1,16 @@
-"""Career conversation: suggest, confirm, check the past, then read the phases relative to the person's own life.
+"""Career conversation: confirm the work, say whether it fits the chart, then answer what the person asks.
 
-    intake -> options (2-3 guesses) -> confirm occupation -> past check (did ~2019 feel easier or harder?)
-           -> reading (now, next months, coming turning points) -> open questions
+    intake -> options (2-3 guesses) -> confirm occupation -> direction (is this path in line with the chart?)
+           -> questions, as many as the person has, each answered for its intent:
+              worry (insecure about career)  -> promise, how this phase compares with their own life, when it eases
+              timing (when will X happen)    -> KP and Vimshottari windows, rise and fall, the next weeks and months
+              direction (switch, which path) -> fit of each path, with the honest limit of what a chart can decide
+              general                        -> the LLM with the full Evidence Pack
 
-Works without an LLM: every reply is built from templates over the Evidence Pack. When a provider is configured,
-open questions after the reading go to the LLM with the pack plus what the person confirmed. The state is a plain
-dict so a stateless API or a WhatsApp webhook can carry it between messages.
+The chart cannot decide a person's direction for them: it shows relatively better and tougher periods, so every
+answer is framed as tendencies against the person's own life. Works without an LLM (templates over the Evidence
+Pack); with a provider the LLM writes the reply from the same focus. The state is a plain dict so a stateless API
+or a WhatsApp webhook can carry it between messages.
 """
 from __future__ import annotations
 
@@ -29,8 +34,22 @@ KEYWORDS = [
     ("profession", r"\b(lawyer|advocate|doctor|ca|chartered|architect|consultant|freelanc\w*|cricket\w*|athlete)\b"),
     ("private", r"\b(job|private|company|corporate|mnc|it|software|engineer|sales|bank|employee|designer)\b"),
 ]
-YES = r"\b(yes|haan|ha|right|correct|true|sahi)\b"
-NO = r"\b(no|nahi|not really|wrong|galat)\b"
+INTENTS = [
+    ("worry", r"\b(worr\w*|insecur\w*|scared|afraid|fear|tension|anxious|stuck|lost|confus\w*|hopeless|depress\w*|"
+              r"will i (ever )?(succeed|grow|settle)|is my career|future|kuch hoga|pareshan|dar)\b"),
+    ("timing", r"\b(when|kab|which (year|month)|what time|how long|how soon|by when|date|timing|this year|next year)\b"),
+    ("direction", r"\b(should i|switch|change (my )?(job|field|career)|job or business|which (field|line|path|career)|"
+                  r"right (direction|path|track)|quit|leave|start (a |my own )?business|government or private)\b"),
+]
+EVENTS = [  # timing question -> (KP outcome, Vimshottari window kind)
+    (r"\b(switch|change|new job|leave|quit)\b", "change"),
+    (r"\b(business|startup|shop|firm|expand\w*)\b", "business"),
+    (r"\b(government|govt|sarkari|exam|selection)\b", "government"),
+]
+KP_OUTCOME = {"government": "government", "private": "job", "business": "business", "profession": "business",
+              "seeking": "job", "student": "job"}
+LIMIT = ("A chart shows tendencies with many possibilities, so I cannot decide your direction for you. "
+         "What it shows clearly is when your periods are relatively stronger or tougher, and that is where I can help most.")
 
 FRAMING = {
     "government": ("posting, promotion or recognition", "transfers, pressure from seniors or delays in promotion"),
@@ -51,6 +70,11 @@ def classify(text: str, offered: list[str]) -> str | None:
         if re.search(pattern, t):
             return sector
     return None
+
+
+def intent(text: str) -> str:
+    t = text.lower()
+    return next((name for name, pattern in INTENTS if re.search(pattern, t)), "general")
 
 
 def _month(iso: str) -> str:
@@ -96,33 +120,8 @@ def start(birth: dict, as_of: str | None = None) -> tuple[dict, str]:
     return state, "\n".join(lines)
 
 
-def _past_question(check: dict, sector: str, born: str) -> str:
-    """State what the chart shows for that shift first, then ask the person to confirm it."""
-    age = (date.fromisoformat(check["date"]) - date.fromisoformat(born)).days / 365.25
-    good, bad = FRAMING["student" if age < 22 else sector]
-    if check["kind"] == "easier":
-        claim = f"things became lighter than the period before, and for your work it supported {good}"
-    else:
-        claim = f"things became heavier than the period before, and for your work it could bring {bad}"
-    why = f" The reason in your chart: {check['why']}." if check.get("why") else ""
-    return (f"From around {_month(check['date'])} your {check['to']} period began. Your chart shows {claim}. "
-            f"The main areas in focus were {', '.join(check['themes'][:2])}.{why}\n"
-            "Did you feel this? A simple yes or no is enough, or tell me what happened.")
-
-
-def _heard(text: str, expected: str) -> str:
-    t = text.lower()
-    if re.search(r"\b(easier|better|lighter|improv\w*|relief|success\w*|cleared|selected|admission)\b", t):
-        return "easier"
-    if re.search(r"\b(harder|worse|heavier|tough|difficult|struggl\w*|stress)\b", t):
-        return "harder"
-    other = "harder" if expected == "easier" else "easier"
-    return expected if re.search(YES, t) else other if re.search(NO, t) else "unclear"
-
-
 def reply(state: dict, text: str) -> tuple[dict, str]:
-    step = state["step"]
-    if step == "confirm":
+    if state["step"] == "confirm":
         sector = classify(text, state.get("offered", []))
         if not sector:
             return state, ("Thank you. Could you say it in a few words, for example 'government job', "
@@ -130,71 +129,127 @@ def reply(state: dict, text: str) -> tuple[dict, str]:
         state["answers"]["occupation"] = {"sector": sector, "words": text}
         log(state, "occupation", sector=sector, words=text, offered=state.get("offered"),
             first_option_right=bool(state.get("offered")) and state["offered"][0] == sector)
-        ev = evidence(state)
-        state["checks"] = ev["phases"]["past_checks"]
-        state["check_i"] = 0
-        if not state["checks"]:
-            state["step"] = "reading"
-            return state, reading(state, ev)
-        state["step"] = "past"
-        return state, "Thank you, that helps.\n" + _past_question(state["checks"][0], sector, state["birth"]["date"])
-    if step == "past":
-        check = state["checks"][state["check_i"]]
-        said = _heard(text, check["kind"])
-        check["said"] = said
-        log(state, "past_check", date=check["date"], periods=f"{check['from']}->{check['to']}",
-            expected=check["kind"], said=said)
-        state["check_i"] += 1
-        if state["check_i"] < len(state["checks"]):
-            return state, _past_question(state["checks"][state["check_i"]], state["answers"]["occupation"]["sector"],
-                                        state["birth"]["date"])
-        state["step"] = "reading"
-        return state, reading(state, evidence(state))
-    return state, open_question(state, text)
+        state["step"] = "questions"
+        return state, "Thank you, that helps.\n" + direction_text(state, evidence(state)) + \
+            "\nWhat is on your mind about your career? Ask as many questions as you like."
+    return state, answer(state, text)
 
 
-def reading(state: dict, ev: dict) -> str:
+def direction(state: dict, ev: dict) -> dict:
+    """Whether the confirmed work is among the chart's stronger indications, and what KP says about it."""
     sector = state["answers"]["occupation"]["sector"]
-    good, bad = FRAMING[sector]
+    ranked = [o["sector"] for o in ev["career_options"]["options"]]
+    kp = ev["kp_career"]
+    outcome = KP_OUTCOME.get(sector)
+    kp_ok = None if outcome is None else (kp["government"]["promised"] if outcome == "government"
+                                          else kp["outcomes"][outcome]["promised"])
+    fit = ("aiming" if sector in ("seeking", "student") else "strongest" if ranked[:1] == [sector] else
+           "supported" if sector in ranked else "weaker")
+    return {"sector": sector, "fit": fit, "chart_options": ranked, "kp_outcome": outcome, "kp_promised": kp_ok,
+            "promise": ev["promise"]["label"], "fields": [f["fields"].split(",")[0] for f in ev["career_options"]["fields"]],
+            "limit": LIMIT}
+
+
+def direction_text(state: dict, ev: dict) -> str:
+    d = direction(state, ev)
+    top = ev["career_options"]["options"][0]["text"]
+    lines = {
+        "strongest": "Broadly, you are in the right direction: this is the strongest indication in your chart.",
+        "supported": f"Broadly, this path is supported by your chart, though its first indication is {top}.",
+        "weaker": (f"Your present path is not the chart's main indication (that is {top}). It can still work, "
+                   "but results come with more effort, so use your stronger periods well."),
+        "aiming": f"For the work you are preparing for, your chart's first indication is {top}.",
+    }[d["fit"]]
+    out = [lines, f"Your overall career promise is {d['promise']}, and the work suits areas like {', '.join(d['fields'])}."]
+    if d["kp_promised"] is not None:
+        out.append("KP also " + ("supports" if d["kp_promised"] else "does not strongly support") + " this line of work.")
+    out.append(LIMIT)
+    return " ".join(out[:3]) + "\n" + out[-1]
+
+
+def focus(state: dict, ev: dict, kind: str, text: str) -> dict:
+    """The few facts a reply of this intent should rest on, picked from the Evidence Pack."""
+    sector = state["answers"]["occupation"]["sector"]
     ph = ev["phases"]
-    cur = ph["current"]
-    checks = state.get("checks", [])
-    matched = sum(c.get("said") == c["kind"] for c in checks)
-    lines = []
-    if checks:
-        lines.append(f"Your past matched the chart at {matched} of {len(checks)} turning points"
-                     + (", so I will speak with some confidence." if matched == len(checks) else
-                        ". Birth time may be slightly off, so take timings as seasons, not exact months."))
-    lines.append(f"Now you are in {cur['period']} (until {_month(cur['end'])}). Compared with the rest of your own "
-                 f"life, this is {cur['label']}. It brings up {', '.join(cur['themes'][:3])}.")
-    if cur["percentile"] >= 0.6:
-        lines.append(f"For your work this favours {good}.")
-    elif cur["percentile"] <= 0.4:
-        lines.append(f"For your work, watch for {bad}. It passes; steady effort counts more than big moves now.")
-    best = max(ph["next_months"], key=lambda p: p["percentile"], default=None)
-    worst = min(ph["next_months"], key=lambda p: p["percentile"], default=None)
-    if best and worst and best is not worst:
-        lines.append(f"In the coming months, {_day(best['start'])} to {_day(best['end'])} ({best['period']}) is the "
-                     f"stronger stretch; {_day(worst['start'])} to {_day(worst['end'])} needs more patience.")
-    for t in ph["upcoming_transitions"][:3]:
-        word = {"relief": "things ease", "pressure": "things get heavier for a while",
-                "new chapter": "a new chapter opens"}[t["kind"]]
-        lines.append(f"Around {_month(t['date'])} ({t['from']} to {t['to']}), {word}"
-                     + (f": good for {good}." if t["kind"] == "relief" else "."))
-    lines.append("These are tendencies to plan with, not fixed fate. What would you like to ask?")
-    return "\n".join(lines)
+    f = {"intent": kind, "direction": direction(state, ev), "direction_text": direction_text(state, ev), "now": ph["current"], "next_weeks": ph["next_weeks"],
+         "next_months": ph["next_months"], "upcoming_transitions": ph["upcoming_transitions"]}
+    if kind == "timing":
+        event = next((e for pattern, e in EVENTS if re.search(pattern, text.lower())), None)
+        outcome = event if event in ("business", "government") else KP_OUTCOME.get(sector, "job")
+        f["event"] = event or "rise"
+        f["kp_windows"] = ev["kp_career"]["timeline"].get(outcome, [])[:3]
+        f["vimshottari_windows"] = ev["future_windows"].get("change" if event == "change" else "rise", [])[:2]
+        f["setback_windows"] = ev["future_windows"].get("setback", [])[:1]
+    return f
 
 
-def open_question(state: dict, text: str) -> str:
+def answer(state: dict, text: str) -> str:
     from astrobot.llm.provider import ProviderNotConfigured, get_provider
     from astrobot.llm.reading import system_prompt
     ev = evidence(state)
-    ev["confirmed_by_person"] = {"occupation": state["answers"].get("occupation"), "past_checks": state.get("checks")}
+    kind = intent(text)
+    ev["focus"] = focus(state, ev, kind, text)
+    ev["confirmed_by_person"] = {"occupation": state["answers"].get("occupation")}
     try:
         provider = get_provider()
     except ProviderNotConfigured:
-        return reading(state, ev)
+        return template(state, ev["focus"])
     history = state.setdefault("history", [])
     out = provider.complete(system_prompt("career", ev), [*history, {"role": "user", "content": text}])
     history += [{"role": "user", "content": text}, {"role": "assistant", "content": out}]
     return out
+
+
+def _feel(f: dict) -> list[str]:
+    """What the coming weeks and months feel like, relative to the person's own periods."""
+    out = []
+    weeks = f["next_weeks"]
+    if weeks:
+        w = weeks[0]
+        out.append(f"Until {_day(w['end'])} it is {w['label']}, with {', '.join(w['themes'][:2])} in focus.")
+        nxt = next((x for x in weeks[1:] if x["label"] != w["label"]), None)
+        if nxt:
+            out.append(f"From {_day(nxt['start'])} to {_day(nxt['end'])} it turns {nxt['label']}.")
+    months = f["next_months"]
+    best = max(months, key=lambda p: p["percentile"], default=None)
+    worst = min(months, key=lambda p: p["percentile"], default=None)
+    if best and worst and best is not worst and best["percentile"] != worst["percentile"]:
+        out.append(f"Over the coming months, {_day(best['start'])} to {_day(best['end'])} is the stronger stretch, "
+                   f"and {_day(worst['start'])} to {_day(worst['end'])} needs more patience.")
+    return out
+
+
+def template(state: dict, f: dict) -> str:
+    good, bad = FRAMING[f["direction"]["sector"]]
+    cur = f["now"]
+    lines = [f"You are in {cur['period']} until {_month(cur['end'])}. Compared with the rest of your own life, "
+             f"this is {cur['label']}."]
+    if f["intent"] == "timing":
+        kp = next(iter(f["kp_windows"]), None)
+        if kp:
+            lines.append(f"By KP, the next window when all three dasha lords support it is {_month(kp['start'])} to "
+                         f"{_month(kp['end'])} ({kp['strength']}" + ("; 'mixed' means it comes with some struggle"
+                                                                      if "mixed" in kp["strength"] else "") + ").")
+        for w in f["vimshottari_windows"][:1]:
+            lines.append(f"By Vimshottari dasha and transits, the stronger time for {good} is {_month(w['start'])} "
+                         f"to {_month(w['end'])} ({w['confidence']} confidence).")
+        for w in f["setback_windows"]:
+            lines.append(f"Go slower from {_month(w['start'])} to {_month(w['end'])}, which may bring {bad}.")
+    elif f["intent"] == "direction":
+        lines.insert(0, f["direction_text"])
+    else:
+        if cur["percentile"] <= 0.4:
+            relief = next((t for t in f["upcoming_transitions"] if t["kind"] == "relief"), None)
+            lines.append(f"It is a heavier phase for you, and it passes" +
+                         (f": things ease around {_month(relief['date'])}." if relief else ".") +
+                         " Steady effort counts more than big moves now.")
+        else:
+            lines.append(f"Your career promise is {f['direction']['promise']}, so there is no reason to lose heart: "
+                         f"this phase favours {good}.")
+    lines += _feel(f)
+    for t in f["upcoming_transitions"][:1 if f["intent"] == "timing" else 2]:
+        word = {"relief": "things ease", "pressure": "things get heavier for a while",
+                "new chapter": "a new chapter opens"}[t["kind"]]
+        lines.append(f"Around {_month(t['date'])}, {word}.")
+    lines.append("These are tendencies to plan with, not fixed fate. What else would you like to know?")
+    return "\n".join(lines)

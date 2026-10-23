@@ -16,7 +16,13 @@ PROMPTS = Path(__file__).resolve().parent / "prompts"
 def system_prompt(domain: str, evidence: dict) -> str:
     persona = (PROMPTS / "persona.md").read_text(encoding="utf-8")
     domain_rules = (PROMPTS / f"{domain}.md").read_text(encoding="utf-8")
-    return f"{persona}\n\n{domain_rules}\n\nEVIDENCE (the only facts you may use):\n{json.dumps(evidence, ensure_ascii=False)}"
+    evidence = dict(evidence)
+    focus = evidence.pop("focus", None)
+    prompt = f"{persona}\n\n{domain_rules}\n\nEVIDENCE (the only facts you may use):\n{json.dumps(evidence, ensure_ascii=False)}"
+    if focus:
+        prompt += ("\n\nFOCUS FOR THIS REPLY (picked from the evidence for this question; build the answer on it, "
+                   "quote its months exactly):\n" + json.dumps(focus, ensure_ascii=False))
+    return prompt
 
 
 @dataclass

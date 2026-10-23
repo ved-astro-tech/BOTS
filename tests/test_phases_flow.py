@@ -48,16 +48,32 @@ def test_classify_answers():
     assert flow.classify("still looking for a job", offered) == "seeking"
 
 
+def test_intents():
+    assert flow.intent("I am very worried, will I ever settle?") == "worry"
+    assert flow.intent("When will I get a promotion?") == "timing"
+    assert flow.intent("Should I switch to business?") == "direction"
+    assert flow.intent("Tell me about my boss") == "general"
+
+
 def test_flow_runs_end_to_end_without_llm(tmp_path, monkeypatch):
     monkeypatch.setattr(flow, "DATA_DIR", tmp_path)
+    monkeypatch.setenv("OPENAI_API_KEY", "")
     state, text = flow.start(BIRTH, "2026-10-21")
     assert "1." in text and "2." in text and state["step"] == "confirm"
     state, text = flow.reply(state, "private company job")
-    while state["step"] == "past":
-        state, text = flow.reply(state, "harder")
-    assert state["step"] == "reading" and "Compared with the rest of your own life" in text
+    assert state["step"] == "questions" and "cannot decide your direction" in text
+    state, text = flow.reply(state, "When will I get a promotion?")
+    assert "Compared with the rest of your own life" in text and "KP" in text
+    state, text = flow.reply(state, "I feel stuck and worried")
+    assert "What else would you like to know?" in text
     rows = (tmp_path / "career_confirmations.jsonl").read_text().splitlines()
     assert '"sector": "private"' in rows[0]
+
+
+def test_next_weeks_are_sookshmas(birth):
+    chart = Chart.from_birth(birth)
+    weeks = Phases(chart, DashaTree(chart.lon("Moon"), birth.utc()), NOW).sookshmas()
+    assert weeks and all(len(w["period"].split("/")) == 4 for w in weeks)
 
 
 def test_chat_api(tmp_path, monkeypatch):
