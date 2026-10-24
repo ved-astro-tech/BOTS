@@ -54,6 +54,22 @@ KP_OUTCOME = {"government": "government", "private": "job", "business": "busines
 LIMIT = ("The final choice of path is yours; what your chart shows clearly is which periods favour a move and "
          "which ask for patience.")
 
+GOALS = [  # what the person wants soon, from their own words; the latest one mentioned wins
+    ("promotion", r"\b(promot\w*|increment|hike|raise|appraisal|grade|pay ?scale)\b"),
+    ("a transfer or better posting", r"\b(transfer\w*|posting|station)\b"),
+    ("a job switch", r"\b(switch|new job|change (my )?job|leave|quit)\b"),
+    ("a job offer", r"\b(get a job|job offer|placement|interview\w*|selection)\b"),
+    ("clearing an exam", r"\b(exam\w*|competitive|upsc|ssc|pcs|neet|jee)\b"),
+    ("business growth", r"\b(sales|clients?|customers?|expan\w*|deal\w*|profit\w*)\b"),
+    ("recognition and respect at work", r"\b(recogni\w*|respect|boss|senior\w*|appreciat\w*|name)\b"),
+    ("more income", r"\b(money|income|salary|earn\w*|savings?)\b"),
+    ("peace of mind at work", r"\b(stress\w*|tension|pressure|politics|conflict\w*)\b"),
+]
+PLANET_ROLE = {"10th lord": "rules your career house, so it lifts status, authority and results at work",
+               "Lagna lord": "rules your Lagna, so it builds confidence and the strength to push for results",
+               "Mahadasha lord": "runs your current Mahadasha, so it shapes how this whole period goes",
+               "Antardasha lord": "runs your current Antardasha, so it shapes the coming months"}
+
 FRAMING = {
     "government": ("posting, promotion or recognition", "transfers, pressure from seniors or delays in promotion"),
     "private": ("a raise, promotion or a better switch", "office pressure, a stalled role or an unwanted change"),
@@ -73,6 +89,18 @@ def classify(text: str, offered: list[str]) -> str | None:
         if re.search(pattern, t):
             return sector
     return None
+
+
+def note_goal(state: dict, text: str) -> None:
+    t = text.lower()
+    hit = next((name for name, pattern in GOALS if re.search(pattern, t)), None)
+    if hit:
+        state["goal"] = hit
+
+
+def goal(state: dict) -> str:
+    """The person's near-term aim: what they said, else what a good period brings in their kind of work."""
+    return state.get("goal") or FRAMING[state["answers"]["occupation"]["sector"]][0]
 
 
 def intent(text: str) -> str:
@@ -135,10 +163,12 @@ def reply(state: dict, text: str) -> tuple[dict, str]:
             return state, ("Thank you. Could you say it in a few words, for example 'government job', "
                            "'private company', 'own business', 'lawyer', or 'still looking'?")
         state["answers"]["occupation"] = {"sector": sector, "words": text}
+        note_goal(state, text)
         log(state, "occupation", sector=sector, words=text, offered=state.get("offered"),
             first_option_right=bool(state.get("offered")) and state["offered"][0] == sector)
         state["step"] = "questions"
         return state, answer(state, text, "first_reading")
+    note_goal(state, text)
     return state, answer(state, text)
 
 
@@ -184,6 +214,8 @@ def focus(state: dict, ev: dict, kind: str, text: str) -> dict:
         md, ad = ev["current_dasha"]["antardasha"]["lords"]
         f["product"] = products.recommend(_chart(state), md, ad, sector, state["birth"].get("gender", ""))
         state["product_offered"] = True
+        if f["product"]:
+            f["product"]["aligned_to"] = _alignment(state, f, f["product"])
     if kind == "timing":
         event = next((e for pattern, e in EVENTS if re.search(pattern, text.lower())), None)
         outcome = event if event in ("business", "government") else KP_OUTCOME.get(sector, "job")
@@ -230,11 +262,30 @@ def _feel(f: dict) -> list[str]:
     return out
 
 
+def _alignment(state: dict, f: dict, p: dict) -> dict:
+    """Tie the product to what the person wants soon and to the next stronger stretch, so the reply is about them."""
+    today = state.get("as_of") or date.today().isoformat()
+    def first_strong(rows: list[dict]) -> dict | None:
+        return min((x for x in rows if x["percentile"] >= 0.6 and x["start"] > today), key=lambda x: x["start"],
+                   default=None)
+    window = first_strong(f["next_months"]) or first_strong(f["next_weeks"])
+    return {"goal": goal(state), "work": state["answers"]["occupation"]["words"], "today": today,
+            "why_this_planet": PLANET_ROLE.get(p.get("role"), ""), "planet": p.get("planet"),
+            "now_is": f["next_weeks"][0]["label"] if f["next_weeks"] else None,
+            "next_strong_stretch": {"start": window["start"], "end": window["end"], "label": window["label"]}
+            if window else None}
+
+
 def _product_lines(p: dict) -> list[str]:
     out = []
+    a = p.get("aligned_to") or {}
     if p.get("gemstone"):
-        out.append(f"For career, strengthen {p['planet']}, your {p['role']}: the stone for it is {p['gemstone']['title']} "
-                   f"(from Rs {p['gemstone']['price_inr']:,.0f} on the JASTRO store). {p['gemstone']['benefits']}")
+        out.append(f"For {a.get('goal', 'your career')}, strengthen {p['planet']}: it {a.get('why_this_planet') or 'supports your career'}. "
+                   f"Its stone is {p['gemstone']['title']} (from Rs {p['gemstone']['price_inr']:,.0f} on the JASTRO store). "
+                   f"{p['gemstone']['benefits']}")
+        if a.get("next_strong_stretch"):
+            w = a["next_strong_stretch"]
+            out.append(f"Start before your stronger stretch, {_day(w['start'])} to {_day(w['end'])}, so it backs your push then.")
         if p.get("substitute"):
             out.append(f"A lighter option is {p['substitute']['title']} (Rs {p['substitute']['price_inr']:,.0f}).")
     if p.get("bracelet"):

@@ -57,6 +57,13 @@ def test_intents():
     assert flow.intent("what benefits can I have wearing citrine?") == "remedy"
 
 
+def test_goal_comes_from_their_words():
+    state = {"answers": {"occupation": {"sector": "government"}}}
+    assert flow.goal(state).startswith("posting")
+    flow.note_goal(state, "when will I get my promotion?")
+    assert flow.goal(state) == "promotion"
+
+
 def test_product_is_a_store_gem_of_a_functional_benefic(birth):
     from astrobot.engine import products
     chart = Chart.from_birth(birth)

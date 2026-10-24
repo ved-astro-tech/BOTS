@@ -63,6 +63,9 @@ def recommend(chart: Chart, md: str, ad: str, sector: str | None = None, gender:
         main = [p for p in stones if re.search(NAVARATNA[choice["planet"]], p["title"], re.I)]
         subs = [p for p in stones if p not in main]
         out.update(choice, gemstone=_brief(main[0]) if main else None, substitute=_brief(subs[0]) if subs else None)
+        if out["substitute"] and out["gemstone"]:
+            out["substitute"]["stands_in_for"] = f'{out["gemstone"]["title"]} ({choice["planet"]})'
+
     theme = BRACELET_THEMES["business" if sector == "business" else "job"]
     bracelets = sorted((p for p in items if p["type"] == "Bracelet" and (women or not p["for_women"])
                         and re.search(theme, p["benefits"] + " " + p["title"], re.I)), key=lambda p: p["price_inr"])
