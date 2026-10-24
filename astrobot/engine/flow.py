@@ -36,7 +36,8 @@ KEYWORDS = [
     ("private", r"\b(job|private|company|corporate|mnc|it|software|engineer|sales|bank|employee|designer)\b"),
 ]
 INTENTS = [
-    ("remedy", r"\b(gem\w*|stone|ratna|jewell?e?ry|bracelet|ring|pendant|rudraksha|remed\w*|upay|upaay|wear)\b"),
+    ("remedy", r"\b(gem\w*|stone|ratna|jewell?e?ry|bracelet|ring|pendant|rudraksha|remed\w*|upay|upaay|wear\w*|pukhraj|neelam|panna|emerald|ruby|manik|pearl|moti|coral|moonga|hessonite|"
+               r"gomed|cat'?s eye|citrine|topaz|opal|amethyst|pyrite|tiger eye)\b"),
     ("worry", r"\b(worr\w*|insecur\w*|scared|afraid|fear|tension|anxious|stuck|lost|confus\w*|hopeless|depress\w*|"
               r"will i (ever )?(succeed|grow|settle)|is my career|future|kuch hoga|pareshan|dar)\b"),
     ("timing", r"\b(when|kab|which (year|month)|what time|how long|how soon|by when|date|timing|this year|next year)\b"),

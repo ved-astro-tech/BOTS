@@ -54,6 +54,7 @@ def test_intents():
     assert flow.intent("Should I switch to business?") == "direction"
     assert flow.intent("Tell me about my boss") == "general"
     assert flow.intent("which gemstone should I wear for my career?") == "remedy"
+    assert flow.intent("what benefits can I have wearing citrine?") == "remedy"
 
 
 def test_product_is_a_store_gem_of_a_functional_benefic(birth):
