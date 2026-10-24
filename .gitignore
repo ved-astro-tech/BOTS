@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.venv/
+.env
+.pytest_cache/
+# real backtest cases may hold client birth data: keep them local
+backtest/cases/*.yaml
+!backtest/cases/*.example.yaml
+backtest/reports/
+data/
