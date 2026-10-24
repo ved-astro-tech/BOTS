@@ -53,6 +53,16 @@ def test_intents():
     assert flow.intent("When will I get a promotion?") == "timing"
     assert flow.intent("Should I switch to business?") == "direction"
     assert flow.intent("Tell me about my boss") == "general"
+    assert flow.intent("which gemstone should I wear for my career?") == "remedy"
+
+
+def test_product_is_a_store_gem_of_a_functional_benefic(birth):
+    from astrobot.engine import products
+    chart = Chart.from_birth(birth)
+    rec = products.recommend(chart, "Moon", "Ketu", "private")
+    assert rec["gemstone"]["title"] in {p["title"] for p in products.catalog()}
+    assert products.functional_benefic(chart, rec["planet"])
+    assert not set(chart.houses_owned(rec["planet"])) <= {6, 8, 12}
 
 
 def test_flow_runs_end_to_end_without_llm(tmp_path, monkeypatch):
@@ -65,6 +75,8 @@ def test_flow_runs_end_to_end_without_llm(tmp_path, monkeypatch):
     assert "option" not in text and "indication" not in text
     state, text = flow.reply(state, "When will I get a promotion?")
     assert "Compared with the rest of your own life" in text and "KP" in text
+    state, text = flow.reply(state, "Which gemstone should I wear?")
+    assert "JASTRO store" in text
     state, text = flow.reply(state, "I feel stuck and worried")
     assert "What else would you like to know?" in text
     rows = (tmp_path / "career_confirmations.jsonl").read_text().splitlines()

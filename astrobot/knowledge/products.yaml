@@ -1,0 +1,1417 @@
+source: JASTRO store export
+products:
+- handle: burmese-ruby
+  title: Burmese Ruby
+  type: Gemstone
+  price_inr: 550500.0
+  planet: Sun
+  for_women: false
+  benefits: Burmese Ruby , known as Manikya in Hindi, is a deep red to magenta pink gemstone linked to the Sun in Vedic astrology.
+    It symbolizes power, confidence, and vitality, bringing success and recognition to the wearer.
+  tags:
+  - astrology gemstone
+  - gemstone
+  - jastro
+  - pendant
+  - ring
+  - ruby
+- handle: peridot
+  title: Peridot
+  type: Gemstone
+  price_inr: 18100.0
+  planet: Mercury
+  for_women: false
+  benefits: Peridot is a vibrant green gemstone, primarily sourced from Pakistan . It is associated with the planet Mercury
+    and is believed to attract prosperity, positivity, and emotional balance.
+  tags:
+  - astrology gemstone
+  - gemstone
+  - jastro
+  - pendant
+  - ring
+- handle: iolite
+  title: Iolite
+  type: Gemstone
+  price_inr: 7160.0
+  planet: Saturn
+  for_women: false
+  benefits: Iolite (Neeli) is a beautiful blue-violet gemstone that gives strength and courage. It helps you face challenges,
+    gain confidence, and stay strong.
+  tags:
+  - astrology gemstone
+  - gemstone
+  - jastro
+  - pendant
+  - ring
+- handle: blue-topaz
+  title: Blue Topaz
+  type: Gemstone
+  price_inr: 6940.0
+  planet: Jupiter
+  for_women: false
+  benefits: Blue Topaz is a beautiful sky-blue gemstone that brings calm and emotional balance. It enhances communication,
+    mental clarity, and decision-making.
+  tags:
+  - astrology gemstone
+  - gemstone
+  - jastro
+  - pendant
+  - ring
+- handle: agate
+  title: Agate
+  type: Gemstone
+  price_inr: 3310.0
+  planet: Saturn
+  for_women: false
+  benefits: Agate is a grounding gemstone that helps improve concentration and mental clarity. It supports focus, balance,
+    and enhances decision-making skills.
+  tags:
+  - agate
+  - astrology gemstone
+  - gemstone
+  - jastro
+  - pendant
+  - ring
+- handle: lapis-lazuli
+  title: Lapis Lazuli
+  type: Gemstone
+  price_inr: 5411.0
+  planet: Saturn
+  for_women: false
+  benefits: Lapis Lazuli (Neelmani) is a deep blue gemstone known for enhancing wisdom, truth, and inner peace. It helps improve
+    communication, boosts confidence, and promotes spiritual growth.
+  tags:
+  - astrology gemstone
+  - gemstone
+  - jastro
+  - pendant
+  - ring
+- handle: white-topaz
+  title: White Topaz
+  type: Gemstone
+  price_inr: 4960.0
+  planet: Venus
+  for_women: false
+  benefits: White Topaz is a sparkling gemstone known to improve mental clarity and focus. It helps clear confusion, enhance
+    decision-making, and boost creativity.
+  tags:
+  - astrology gemstone
+  - gemstone
+  - jastro
+  - pendant
+  - ring
+- handle: chalcedony
+  title: Chalcedony
+  type: Gemstone
+  price_inr: 3640.0
+  planet: Mercury
+  for_women: false
+  benefits: Chalcedony (Onyx) is a soothing gemstone known for calming emotions and promoting harmony. It helps reduce stress,
+    anxiety and supports clear, peaceful thinking.
+  tags:
+  - astrology gemstone
+  - gemstone
+  - jastro
+  - pendant
+  - ring
+- handle: garnet
+  title: Garnet
+  type: Gemstone
+  price_inr: 5620.0
+  planet: Rahu
+  for_women: false
+  benefits: Garnet (Laal Mani) is a deep red gemstone known to strengthen love and improve relationships. It promotes passion,
+    trust, and emotional healing between partners.
+  tags:
+  - astrology gemstone
+  - gemstone
+  - jastro
+  - pendant
+  - ring
+- handle: turquoise
+  title: Turquoise
+  type: Gemstone
+  price_inr: 5582.0
+  planet: Jupiter
+  for_women: false
+  benefits: Turquoise (Firoza) is a beautiful blue-green gemstone known for promoting good health and healing. It helps boost
+    the immune system, reduce stress, and bring overall wellness.
+  tags:
+  - astrology gemstone
+  - gemstone
+  - jastro
+  - pendant
+  - ring
+- handle: tiger-eye
+  title: Tiger Eye
+  type: Gemstone
+  price_inr: 4168.0
+  planet: Ketu
+  for_women: false
+  benefits: Tiger Eye is a beautiful golden-brown gemstone known to boost confidence and courage. It helps overcome fear and
+    anxiety, promoting strength and self-belief.
+  tags:
+  - astrology gemstone
+  - gemstone
+  - jastro
+  - pendant
+  - ring
+- handle: sulemani-hakik
+  title: Sulemani Hakik
+  type: Gemstone
+  price_inr: 4010.0
+  planet: Saturn
+  for_women: false
+  benefits: Sulemani Hakik is a radiant orange-red gemstone that enhances positive energy and enthusiasm. It removes negative
+    thoughts and brings happiness and hope into life.
+  tags:
+  - astrology gemstone
+  - gemstone
+  - jastro
+  - pendant
+  - ring
+- handle: moonstone
+  title: Moonstone
+  type: Gemstone
+  price_inr: 4300.0
+  planet: Moon
+  for_women: false
+  benefits: Moonstone (Chandramani) is a gentle gemstone known for bringing peace and emotional balance. It soothes stress,
+    calms the mind, and promotes harmony in relationships.
+  tags:
+  - astrology gemstone
+  - gemstone
+  - jastro
+  - pendant
+  - ring
+- handle: white-pukhraj
+  title: White Pukhraj
+  type: Gemstone
+  price_inr: 88500.0
+  planet: Venus
+  for_women: false
+  benefits: White Pukhraj , also known as White Sapphire , is a rare and beautiful gemstone associated with wisdom, purity,
+    and prosperity. It is believed to strengthen Venus’s positive effects, enhancing love, relationships, and luxury in life.
+  tags:
+  - astrology gemstone
+  - gemstone
+  - jastro
+  - pendant
+  - pukhraj
+  - ring
+- handle: amethyst
+  title: Amethyst
+  type: Gemstone
+  price_inr: 4914.0
+  planet: Saturn
+  for_women: false
+  benefits: Amethyst (Jamuniya) is a stunning purple gemstone valued for its calming and mind-clearing properties. It is believed
+    to enhance focus, improve decision-making, and promote emotional balance.
+  tags:
+  - amethyst
+  - astrology gemstone
+  - gemstone
+  - jastro
+  - pendant
+  - ring
+- handle: citrine
+  title: Citrine
+  type: Gemstone
+  price_inr: 5224.0
+  planet: Jupiter
+  for_women: false
+  benefits: Citrine (Sunela) is a bright yellow gemstone known to attract positivity, happiness, and abundance. It helps boost
+    confidence, creativity, and energy for a joyful life.
+  tags:
+  - astrology gemstone
+  - gemstone
+  - jastro
+  - pendant
+  - ring
+- handle: pearl
+  title: Pearl
+  type: Gemstone
+  price_inr: 4854.0
+  planet: Moon
+  for_women: false
+  benefits: Pearl (Moti) is a soothing gemstone known for bringing peace and calm to the mind. It helps reduce stress and
+    anxiety while promoting emotional balance.
+  tags:
+  - astrology gemstone
+  - gemstone
+  - jastro
+  - pearl
+  - pendant
+  - ring
+- handle: ceylon-cat-s-eye
+  title: Ceylon Cat's Eye
+  type: Gemstone
+  price_inr: 88500.0
+  planet: Ketu
+  for_women: false
+  benefits: Ceylon Cat's Eye (Lehsunia) is a rare gemstone sourced from Sri Lanka (Ceylon). It is associated with the planet
+    Ketu and is believed to offer protection from negative energies, unexpected obstacles, and financial instability.
+  tags:
+  - astrology gemstone
+  - cat
+  - gemstone
+  - jastro
+  - pendant
+  - ring
+- handle: cat-s-eye
+  title: Cat's Eye
+  type: Gemstone
+  price_inr: 4190.0
+  planet: Ketu
+  for_women: false
+  benefits: Cat’s Eye (Lehsuniya) is a unique gemstone known for bringing protection and success in life. It helps remove
+    obstacles, attract wealth, and enhance career growth.
+  tags:
+  - astrology gemstone
+  - cat
+  - gemstone
+  - jastro
+  - pendant
+  - ring
+- handle: ceylon-hessonite
+  title: Ceylon Hessonite
+  type: Gemstone
+  price_inr: 26900.0
+  planet: Rahu
+  for_women: false
+  benefits: Ceylon Hessonite (Gomed) is a honey-brown gemstone sourced from Sri Lanka (Ceylon). It is associated with the
+    planet Rahu and is believed to bring career growth, mental clarity, and stability.
+  tags:
+  - astrology gemstone
+  - gemstone
+  - jastro
+  - pendant
+  - ring
+- handle: hessonite
+  title: Hessonite
+  type: Gemstone
+  price_inr: 9349.0
+  planet: Rahu
+  for_women: false
+  benefits: Hessonite (Gomed) is a warm orange gemstone known for attracting success and prosperity. It helps remove obstacles,
+    boosts confidence, and enhances leadership qualities.
+  tags:
+  - astrology gemstone
+  - gemstone
+  - jastro
+  - pendant
+  - ring
+- handle: natural-zircon
+  title: Natural Zircon
+  type: Gemstone
+  price_inr: 20300.0
+  planet: Venus
+  for_women: false
+  benefits: Natural Zircon (Jarkan) is a certified gemstone admired for its brilliant sparkle and natural beauty. Associated
+    with Venus (Shukra) , it is believed to support clarity, confidence, emotional balance, and overall well-being.
+  tags:
+  - astrology gemstone
+  - gemstone
+  - jastro
+  - pendant
+  - ring
+- handle: zirconia
+  title: Zirconia
+  type: Gemstone
+  price_inr: 4300.0
+  planet: Venus
+  for_women: false
+  benefits: Zirconia is a sparkling gemstone known for its brilliance and strong healing energies. It helps improve focus,
+    mental clarity, and brings peace of mind.
+  tags:
+  - astrology gemstone
+  - gemstone
+  - jastro
+  - pendant
+  - ring
+- handle: italian-red-coral
+  title: Italian Red Coral
+  type: Gemstone
+  price_inr: 48625.0
+  planet: Mars
+  for_women: false
+  benefits: Italian Red Coral (Moonga) is a vibrant gemstone known to boost confidence, courage, and inner strength. It helps
+    overcome fear, anxiety, and hesitation, empowering you to face challenges boldly.
+  tags:
+  - astrology gemstone
+  - coral
+  - gemstone
+  - jastro
+  - pendant
+  - ring
+- handle: moonga
+  title: Moonga
+  type: Gemstone
+  price_inr: 14200.0
+  planet: Mars
+  for_women: false
+  benefits: Moonga (Red Coral) is a vibrant gemstone known to boost confidence, courage, and inner strength. It helps overcome
+    fear, anxiety, and hesitation, empowering you to face challenges boldly.
+  tags:
+  - astrology gemstone
+  - gemstone
+  - jastro
+  - pendant
+  - ring
+- handle: australian-fire-opal
+  title: Australian Fire Opal
+  type: Gemstone
+  price_inr: 53300.0
+  planet: Venus
+  for_women: false
+  benefits: Australian Fire Opal (Agni Mani) is a dazzling gemstone with warm hues of yellow, orange, and red that radiate
+    fiery beauty. It is believed to spark passion, attract love, and inspire joy and creativity.
+  tags:
+  - astrology gemstone
+  - gemstone
+  - jastro
+  - opal
+  - pendant
+  - ring
+- handle: fire-opal
+  title: Fire Opal
+  type: Gemstone
+  price_inr: 15960.0
+  planet: Venus
+  for_women: false
+  benefits: Fire Opal (Agni Mani) is a dazzling gemstone with warm hues of yellow, orange, and red that radiate fiery beauty.
+    It is believed to spark passion, attract love, and inspire joy and creativity.
+  tags:
+  - astrology gemstone
+  - gemstone
+  - jastro
+  - opal
+  - pendant
+  - ring
+- handle: burmese-heated-ruby
+  title: Burmese Heated Ruby
+  type: Gemstone
+  price_inr: 88500.0
+  planet: Sun
+  for_women: false
+  benefits: Burmese Heated Ruby (Manik) is a premium red gemstone sourced from Myanmar (Burma). It is associated with the
+    planet Sun and is believed to enhance confidence, leadership, and personal success.
+  tags:
+  - astrology gemstone
+  - gemstone
+  - jastro
+  - pendant
+  - ring
+  - ruby
+- handle: african-ruby
+  title: African Ruby
+  type: Gemstone
+  price_inr: 88500.0
+  planet: Sun
+  for_women: false
+  benefits: African Ruby , known as Manikya in Hindi, is a deep red to magenta pink gemstone linked to the Sun in Vedic astrology.
+    It symbolizes power, confidence, and vitality, bringing success and recognition to the wearer.
+  tags:
+  - astrology gemstone
+  - gemstone
+  - jastro
+  - pendant
+  - ring
+  - ruby
+- handle: ruby
+  title: Ruby
+  type: Gemstone
+  price_inr: 9054.0
+  planet: Sun
+  for_women: false
+  benefits: Ruby , known as Manikya in Hindi, is a vibrant red gemstone linked to the Sun in Vedic astrology. It symbolizes
+    power, confidence, and vitality, bringing success and recognition to the wearer.
+  tags:
+  - astrology gemstone
+  - gemstone
+  - jastro
+  - pendant
+  - ring
+  - ruby
+- handle: premium-emerald
+  title: Premium Emerald
+  type: Gemstone
+  price_inr: 19244.0
+  planet: Mercury
+  for_women: false
+  benefits: Premium Emerald (Panna) is a green gemstone linked to planet Mercury , known for enhancing wisdom, communication,
+    and creativity. It attracts prosperity, success, and harmony in relationships.
+  tags:
+  - astrology gemstone
+  - emerald
+  - gemstone
+  - jastro
+  - pendant
+  - ring
+- handle: zambian-emerald
+  title: Zambian Emerald
+  type: Gemstone
+  price_inr: 65620.0
+  planet: Mercury
+  for_women: false
+  benefits: Zambian Emerald (Panna) is a green gemstone linked to planet Mercury , known for enhancing wisdom, communication,
+    and creativity. It attracts prosperity, success, and harmony in relationships.
+  tags:
+  - astrology gemstone
+  - emerald
+  - gemstone
+  - jastro
+  - pendant
+  - ring
+- handle: emerald
+  title: Emerald
+  type: Gemstone
+  price_inr: 14199.0
+  planet: Mercury
+  for_women: false
+  benefits: Emerald (Panna) is a green gemstone linked to planet Mercury , known for enhancing wisdom, communication, and
+    creativity. It attracts prosperity, success, and harmony in relationships.
+  tags:
+  - astrology gemstone
+  - emerald
+  - gemstone
+  - jastro
+  - pendant
+  - ring
+- handle: peetambari-neelam
+  title: Peetambari Neelam
+  type: Gemstone
+  price_inr: 82175.0
+  planet: Jupiter
+  for_women: false
+  benefits: Peetambari Neelam is a unique bi-coloured sapphire that combines the powers of both Jupiter and Saturn . It is
+    believed to bring wealth, wisdom, stability, and protection to the wearer.
+  tags:
+  - astrology gemstone
+  - gemstone
+  - jastro
+  - neelam
+  - pendant
+  - ring
+- handle: ceylon-neelam
+  title: Ceylon Neelam
+  type: Gemstone
+  price_inr: 67875.0
+  planet: Saturn
+  for_women: false
+  benefits: Ceylon Neelam (Blue Sapphire) is a powerful gemstone linked to planet Saturn , known for bringing rapid success,
+    discipline, and prosperity. It protects from negativity and removes obstacles in life.
+  tags:
+  - astrology gemstone
+  - gemstone
+  - jastro
+  - neelam
+  - pendant
+  - ring
+- handle: neelam
+  title: Neelam
+  type: Gemstone
+  price_inr: 19086.0
+  planet: Saturn
+  for_women: false
+  benefits: Neelam (Blue Sapphire) is a powerful gemstone linked to planet Saturn , known for bringing rapid success, discipline,
+    and prosperity. It protects from negativity and removes obstacles in life.
+  tags:
+  - astrology gemstone
+  - gemstone
+  - jastro
+  - neelam
+  - pendant
+  - ring
+- handle: ceylon-pukhraj
+  title: Ceylon Pukhraj
+  type: Gemstone
+  price_inr: 48625.0
+  planet: Jupiter
+  for_women: false
+  benefits: Ceylon Pukhraj (Yellow Sapphire) is a yellow gemstone from Sri Lanka . It is linked to the planet Jupiter and
+    brings luck, money, and success.
+  tags:
+  - astrology gemstone
+  - gemstone
+  - jastro
+  - pendant
+  - pukhraj
+  - ring
+- handle: pukhraj
+  title: Pukhraj
+  type: Gemstone
+  price_inr: 17000.0
+  planet: Jupiter
+  for_women: false
+  benefits: Pukhraj (Yellow Sapphire) is a yellow gemstone from Bangkok . It is linked to the planet Jupiter and brings luck,
+    money, and success.
+  tags:
+  - astrology gemstone
+  - gemstone
+  - jastro
+  - pendant
+  - pukhraj
+  - ring
+- handle: wealth-om-pyrite-bracelet
+  title: Wealth OM Pyrite Bracelet
+  type: Bracelet
+  price_inr: 699.0
+  planet: null
+  for_women: false
+  benefits: Bring both money and peace into your life with the Wealth OM Bracelet . This beautiful bracelet combines the power
+    of Raw Pyrite , known for attracting wealth and success, with lava beads that promote calmness and peace.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - pyrite
+  - spiritual bracelet
+- handle: virgo-zodiac-carnelian-milky-quartz-bracelet-for-women
+  title: Virgo (कन्या राशि) Zodiac Carnelian & Milky Quartz Bracelet for Women
+  type: Bracelet
+  price_inr: 899.0
+  planet: null
+  for_women: true
+  benefits: Virgo women are practical, organised, and detail-oriented. However, they can sometimes overthink and be too hard
+    on themselves.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - quartz
+  - spiritual bracelet
+  - zodiac
+- handle: turquoise-bracelet
+  title: Turquoise bracelet
+  type: Bracelet
+  price_inr: 699.0
+  planet: null
+  for_women: false
+  benefits: The Turquoise Bracelet is known as the Stone of Protection and Good Fortune, bringing peace, prosperity, and balance
+    into your life. It protects you from negative energies while helping you think clearly and make wise decisions.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - spiritual bracelet
+- handle: tiger-eye-flat-beaded-bracelet
+  title: Tiger-Eye Flat-Beaded Bracelet
+  type: Bracelet
+  price_inr: 1299.0
+  planet: null
+  for_women: false
+  benefits: The Tiger Eye Flat-Beaded Bracelet is a stylish accessory that supports confidence , focus, and inner strength.
+    Made with real tiger eye stones , it helps you stay grounded, calm, and steady during busy or stressful days.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - spiritual bracelet
+  - tiger
+- handle: tiger-eye-the-celeb-bracelet
+  title: Tiger Eye - The Celeb Bracelet
+  type: Bracelet
+  price_inr: 699.0
+  planet: null
+  for_women: false
+  benefits: The Tiger Eye Bracelet is a striking accessory that adds a bold and stylish touch to any outfit. Made with beautiful
+    golden-brown Tiger Eye beads and a Buddha charm , it brings a sense of strength, confidence, and calm energy .
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - spiritual bracelet
+  - tiger
+- handle: taurus-zodiac-sunstone-carnelian-bracelet-for-women
+  title: Taurus (वृषभ राशि) Zodiac Sunstone & Carnelian Bracelet for Women
+  type: Bracelet
+  price_inr: 899.0
+  planet: null
+  for_women: true
+  benefits: Tauruses are known for their patience, loyalty, and determination, but their love for comfort and routine can
+    sometimes make it difficult to embrace change or take the first step. This Taurus (वृषभ राशि) Zodiac Sunstone & Carnelian
+    Bracelet is designed to inspire confidence, motivation, and steady progress.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - spiritual bracelet
+  - zodiac
+- handle: scorpio-zodiac-black-obsidian-milky-quartz-bracelet-for-women
+  title: Scorpio (वृश्चिक राशि) Zodiac Black Obsidian & Milky Quartz Bracelet for Women
+  type: Bracelet
+  price_inr: 899.0
+  planet: null
+  for_women: true
+  benefits: Scorpios often feel emotions deeply and easily absorb the energy around them. The Scorpio (वृश्चिक राशि) Zodiac
+    Black Obsidian & Milky Quartz Bracelet for Women is thoughtfully designed to help restore emotional balance while complementing
+    your everyday style.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - obsidian
+  - quartz
+  - spiritual bracelet
+  - zodiac
+- handle: sagittarius-zodiac-black-obsidian-lapis-lazuli-bracelet-for-women
+  title: Sagittarius (धनु राशि) Zodiac Black Obsidian & Lapis Lazuli Bracelet for Women
+  type: Bracelet
+  price_inr: 899.0
+  planet: null
+  for_women: true
+  benefits: Sagittarius women are adventurous, optimistic, and always ready to explore new opportunities, but their free-spirited
+    nature can sometimes make it difficult to stay focused or grounded. This Sagittarius (धनु राशि) Zodiac Black Obsidian
+    & Lapis Lazuli Bracelet is designed to encourage stability, confidence, and a clear sense of direction.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - lapis
+  - obsidian
+  - spiritual bracelet
+  - zodiac
+- handle: rudraksha-karungali-healing-bracelet-with-damru-8mm
+  title: Rudraksha Karungali Healing Bracelet With Damru 8mm
+  type: Bracelet
+  price_inr: 599.0
+  planet: null
+  for_women: false
+  benefits: This bracelet is a powerful mix of Karungali beads , two 5 Mukhi Rudraksha beads , and a Karungali Damru that
+    together create strong protection, peace, and steady energy around you. Karungali (Black Ebony Wood) removes negativity,
+    calms your mind, and balances your emotions.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - rudraksha
+  - spiritual bracelet
+- handle: rose-quartz-flat-beaded-bracelet
+  title: Rose Quartz Flat-Beaded Bracelet
+  type: Bracelet
+  price_inr: 1299.0
+  planet: null
+  for_women: false
+  benefits: The Rose Quartz Flat-Beaded Bracelet is crafted with rose quartz stones, famously known as the “Stone of Love.”
+    Rose quartz has long been cherished for its gentle, comforting energy. It appeals to the heart and emotions, making it
+    one of the most beloved crystals for emotional healing and personal well-being.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - quartz
+  - spiritual bracelet
+- handle: rose-quartz-bracelet-with-buddha
+  title: Rose Quartz Bracelet with Buddha
+  type: Bracelet
+  price_inr: 699.0
+  planet: null
+  for_women: false
+  benefits: Also called the Stone of Love, the Rose Quartz Bracelet with Buddha is designed to open your heart to love, compassion,
+    and emotional healing. Infused with the peaceful energy of Buddha, this bracelet balances your heart chakra, inviting
+    forgiveness, inner peace, and love in all forms.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - quartz
+  - spiritual bracelet
+- handle: rose-quartz-bracelet-women-6mm-beads
+  title: Rose Quartz Bracelet (Women - 6mm Beads)
+  type: Bracelet
+  price_inr: 699.0
+  planet: null
+  for_women: true
+  benefits: The Rose Quartz Bracelet for women is a beautiful and powerful bracelet made with natural rose quartz stones,
+    also known as the “stone of love.” Rose quartz is believed to attract love, strengthen relationships, and bring inner
+    peace. For women, this bracelet is especially beneficial as it helps open the heart, heal emotional pain, and bring feelings
+    of comfort and positivity.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - quartz
+  - spiritual bracelet
+- handle: raw-pyrite-bracelet-women-6mm-beads
+  title: Raw Pyrite Bracelet (Women - 6mm Beads)
+  type: Bracelet
+  price_inr: 699.0
+  planet: null
+  for_women: true
+  benefits: The Raw Pyrite Bracelet for women is a powerful and stylish bracelet made with natural pyrite stones . Pyrite
+    is also called the “ stone of wealth ” because it attracts money, prosperity, and good luck.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - pyrite
+  - spiritual bracelet
+- handle: raw-pyrite-bracelet
+  title: Raw Pyrite Bracelet
+  type: Bracelet
+  price_inr: 699.0
+  planet: null
+  for_women: false
+  benefits: The Raw Pyrite Bracelet is a powerful statement of protection and prosperity. Each stone is hand-selected for
+    its raw, natural beauty, emitting strong, protective energy.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - pyrite
+  - spiritual bracelet
+- handle: positive-emotions-bracelet
+  title: Positive Emotions Bracelet
+  type: Bracelet
+  price_inr: 599.0
+  planet: null
+  for_women: false
+  benefits: The Positive Emotions Bracelet is a perfect gift for any occasion. Made with beautiful Lapis Lazuli crystals,
+    it is designed to bring positivity and emotional healing into your life.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - spiritual bracelet
+- handle: pisces-zodiac-citrine-tiger-eye-bracelet-for-women
+  title: Pisces (मीन राशि) Zodiac Citrine & Tiger Eye Bracelet for Women
+  type: Bracelet
+  price_inr: 899.0
+  planet: null
+  for_women: true
+  benefits: Pisces women are kind, intuitive, and deeply compassionate, but they can sometimes absorb others' emotions and
+    find it difficult to set healthy emotional boundaries. This Pisces (मीन राशि) Zodiac Citrine & Tiger Eye Bracelet is designed
+    to support positivity, emotional resilience, and a grounded mindset.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - spiritual bracelet
+  - tiger
+  - zodiac
+- handle: mulank-9-mangal-crystal-bracelet-for-women
+  title: Mulank 9 Mangal Crystal Bracelet for Women
+  type: Bracelet
+  price_inr: 999.0
+  planet: Mars
+  for_women: true
+  benefits: Mulank 9 is ruled by Mars (Mangal) , linked with courage, energy, confidence, action, determination , and strength
+    . This Mulank 9 Mangal Bracelet combines Mars energy with Red Jasper and Carnelian in a meaningful combination for everyday
+    wear.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - spiritual bracelet
+- handle: mulank-8-saturn-crystal-bracelet-for-women
+  title: Mulank 8 Saturn Crystal Bracelet for Women
+  type: Bracelet
+  price_inr: 999.0
+  planet: Saturn
+  for_women: true
+  benefits: Mulank 8 is ruled by Saturn (Shani) , linked with discipline, patience, responsibility, hard work, stability,
+    and long-term progress. This Mulank 8 Shani Bracelet combines Shani energy with Black Tourmaline and Lapis Lazuli in a
+    simple, meaningful bracelet for everyday wear.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - spiritual bracelet
+- handle: mulank-7-ketu-crystal-bracelet-for-women
+  title: Mulank 7 Ketu Crystal Bracelet for Women
+  type: Bracelet
+  price_inr: 999.0
+  planet: Ketu
+  for_women: true
+  benefits: Mulank 7 is ruled by Ketu , linked with spirituality, intuition, detachment, and self-discovery . People with
+    Mulank 7 are often thoughtful, intuitive, private, and naturally drawn towards understanding things deeply.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - spiritual bracelet
+- handle: mulank-6-shukra-crystal-bracelet-for-women
+  title: Mulank 6 Shukra Crystal Bracelet for Women
+  type: Bracelet
+  price_inr: 999.0
+  planet: Venus
+  for_women: true
+  benefits: Mulank 6 is ruled by Venus (Shukra) , linked with love, relationships, comfort, creativity, luxury, and self-worth.
+    People with Mulank 6 are naturally drawn towards harmony, aesthetics, and meaningful connections.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - spiritual bracelet
+- handle: mulank-5-budh-crystal-bracelet-for-women
+  title: Mulank 5 Budh Crystal Bracelet for Women
+  type: Bracelet
+  price_inr: 999.0
+  planet: Mercury
+  for_women: true
+  benefits: Mulank 5 is ruled by Mercury (Budh ), linked with c ommunication, intelligence, quick thinking, business sense,
+    and learning . People with Mulank 5 are often curious, social, expressive, and comfortable trying new things.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - spiritual bracelet
+- handle: mulank-4-rahu-crystal-bracelet-for-women
+  title: Mulank 4 Rahu Crystal Bracelet for Women
+  type: Bracelet
+  price_inr: 999.0
+  planet: Rahu
+  for_women: true
+  benefits: Mulank 4 is ruled by Rahu and is linked with ambition, different thinking, and sudden changes. People with this
+    mulank often like doing things their own way and exploring new ideas and opportunities.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - spiritual bracelet
+- handle: mulank-3-jupiter-crystal-bracelet-for-women
+  title: Mulank 3 Jupiter Crystal Bracelet for Women
+  type: Bracelet
+  price_inr: 999.0
+  planet: Jupiter
+  for_women: true
+  benefits: Mulank 3 is ruled by Jupiter (Guru) , the planet associated with wisdom, learning, growth, knowledge, optimism
+    , and abundance . People born under Mulank 3 are naturally curious, ambitious, and drawn towards personal and professional
+    growth.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - spiritual bracelet
+- handle: mulank-2-moon-crystal-bracelet-for-women
+  title: Mulank 2 Moon Crystal Bracelet for Women
+  type: Bracelet
+  price_inr: 999.0
+  planet: Moon
+  for_women: true
+  benefits: 𝐌𝐮𝐥𝐚𝐧𝐤 𝟐 is ruled by the Moon (Chandra) , associated with emotions, intuition, sensitivity, creativity, and harmony
+    . People with this number are often caring, understanding, and naturally good at sensing the mood around them.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - spiritual bracelet
+- handle: mulank-1-sun-crystal-bracelet-for-women
+  title: Mulank 1 Sun Crystal Bracelet for Women
+  type: Bracelet
+  price_inr: 999.0
+  planet: Sun
+  for_women: true
+  benefits: Mulank 1 is ruled by the Sun , the planet of confidence, leadership, authority, and recognition. This bracelet
+    is designed to strengthen Sun qualities and support confidence, focus, and leadership.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - spiritual bracelet
+- handle: money-maker-bracelet
+  title: Money Maker Bracelet
+  type: Bracelet
+  price_inr: 699.0
+  planet: null
+  for_women: false
+  benefits: Attract money, boost confidence, and protect yourself from negativity. This Money Maker bracelet combines 100%
+    original Raw Pyrite, Tiger Eye, and Black Obsidian for a powerful, all-in-one solution.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - spiritual bracelet
+- handle: metal-rudraksha-and-karungali-bracelet-black
+  title: Metal Rudraksha and Karungali Bracelet - Black
+  type: Bracelet
+  price_inr: 899.0
+  planet: null
+  for_women: false
+  benefits: The Black Metal Rudraksha and Karungali Bracelet is crafted with authentic 5 Mukhi Rudraksha and Karungali (Ebony
+    wood) . It is an ideal bracelet for men seeking balance, protection, and a bold everyday style.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - rudraksha
+  - spiritual bracelet
+- handle: metal-raw-pyrite-bracelet-silver
+  title: Metal Raw Pyrite Bracelet - Silver
+  type: Bracelet
+  price_inr: 999.0
+  planet: null
+  for_women: false
+  benefits: Silver Metal Raw Pyrite Bracelet is linked to Shani (Saturn) energy and is believed to help balance Saturn-related
+    challenges. It features natural raw pyrite stones set in a silver-plated, anti-tarnish bracelet.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - pyrite
+  - spiritual bracelet
+- handle: metal-raw-pyrite-bracelet-gold
+  title: Metal Raw Pyrite Bracelet - Gold
+  type: Bracelet
+  price_inr: 999.0
+  planet: null
+  for_women: false
+  benefits: The Metal Raw Pyrite Bracelet – Gold is made for those who want strong money energy with a touch of elegance.
+    Pyrite is known as a powerful money magnet that attracts wealth, success, and abundance .
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - pyrite
+  - spiritual bracelet
+- handle: metal-raw-pyrite-bracelet-black
+  title: Metal Raw Pyrite Bracelet - Black
+  type: Bracelet
+  price_inr: 999.0
+  planet: null
+  for_women: false
+  benefits: The Metal Raw Pyrite Bracelet – Black is designed for those who want strong money energy with everyday protection.
+    Pyrite is known as a powerful money magnet that attracts wealth, success, and abundance.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - pyrite
+  - spiritual bracelet
+- handle: metal-karungali-bracelet-silver
+  title: Metal Karungali Bracelet - Silver
+  type: Bracelet
+  price_inr: 899.0
+  planet: null
+  for_women: false
+  benefits: The Metal Karungali Bracelet 6mm is made with original Karungali beads , known for their strong protective and
+    grounding energy . Karungali is closely linked with Lord Murugan and is believed to carry divine strength, courage, and
+    victory over negative forces .
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - spiritual bracelet
+- handle: metal-dhan-yog-bracelet-for-women
+  title: Metal Dhan Yog Bracelet for Women
+  type: Bracelet
+  price_inr: 899.0
+  planet: null
+  for_women: true
+  benefits: 'The Metal Dhan Yog Bracelet for Women is designed to attract wealth, build confidence, and support positive growth
+    while keeping the style elegant and modern. Crafted with powerful crystals like: • Pyrite - Attracts Money • Citrine -
+    Helps in Career Growth • Quartz - Boosts Crystal Power by 10x • Green Aventurine - Attracts Luck • Tiger Eye - Boost Confidence
+    Note: Durable brass base with premium IGP plating for long-lasting shine, while natural crystals may slightly fade with
+    prolonged sunlight exposure.'
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - spiritual bracelet
+- handle: metal-dhan-yog-bracelet-silver
+  title: Metal Dhan Yog Bracelet - Silver
+  type: Bracelet
+  price_inr: 999.0
+  planet: null
+  for_women: false
+  benefits: Metal Dhan Yog Bracelet – Silver attracts samriddhi (prosperity), financial luck, and positive energy. Silver
+    enhances the power of prosperity stones while adding a refined shine.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - spiritual bracelet
+- handle: metal-dhan-yog-bracelet-gold
+  title: Metal Dhan Yog Bracelet - Gold
+  type: Bracelet
+  price_inr: 999.0
+  planet: null
+  for_women: false
+  benefits: The Gold Metal Dhan Yog Bracelet is made to attract wealth, boost confidence, and support positive financial energy.
+    Crafted with 100% genuine crystals and premium anti-tarnish gold-plated metal, it combines powerful energy benefits with
+    an elegant, stylish look.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - spiritual bracelet
+- handle: metal-dhan-yog-bracelet-black
+  title: Metal Dhan Yog Bracelet - Black
+  type: Bracelet
+  price_inr: 999.0
+  planet: null
+  for_women: false
+  benefits: The Black Metal Dhan Yog Bracelet is designed to attract wealth, confidence, and strong, protective financial
+    energy into your life. This powerful bracelet uses premium crystals and anti-tarnish black-plated metal.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - spiritual bracelet
+- handle: love-attraction-with-evil-eye-hamsa-bracelet
+  title: Love Attraction with Evil Eye Hamsa Bracelet
+  type: Bracelet
+  price_inr: 599.0
+  planet: null
+  for_women: false
+  benefits: The Love Attraction with Evil Eye Hamsa Bracelet is designed to attract love and positivity into your life. Made
+    with soothing pink rose quartz crystals, it helps open your heart to love, strengthen relationships, and boost self-love.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - spiritual bracelet
+- handle: love-attraction-chips-bracelet
+  title: Love Attraction Chips Bracelet
+  type: Bracelet
+  price_inr: 899.0
+  planet: null
+  for_women: false
+  benefits: Love Attraction chips bracelet is a beautiful pink crystal known for its gentle and loving energy. Its a popular
+    choice for those looking to attract love, strengthen relationships, and promote self-love.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - spiritual bracelet
+- handle: love-peace-metal-bracelet
+  title: Love & Peace Metal Bracelet
+  type: Bracelet
+  price_inr: 899.0
+  planet: null
+  for_women: false
+  benefits: This beautiful bracelet combines genuine Rose Quartz and Amethyst to bring love into your life and calm your mind.
+    It is perfect for any woman who wants to feel more peace in her relationships and more love for herself.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - spiritual bracelet
+- handle: love-money-metal-bracelet-for-women
+  title: Love & Money Metal Bracelet for Women
+  type: Bracelet
+  price_inr: 999.0
+  planet: null
+  for_women: true
+  benefits: This bracelet combines Pyrite and Garnet stones to attract money and bring love into your life. It helps you feel
+    confident, emotionally balanced, and open to better opportunities.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - spiritual bracelet
+- handle: libra-zodiac-lapis-lazuli-howlite-bracelet-for-women
+  title: Libra (तुला राशि) Zodiac Lapis Lazuli & Howlite Bracelet for Women
+  type: Bracelet
+  price_inr: 899.0
+  planet: null
+  for_women: true
+  benefits: Libra women naturally seek balance, harmony, and meaningful relationships, but they can sometimes overthink decisions
+    or put others' needs before their own. This Libra (तुला राशि) Zodiac Lapis Lazuli & Howlite Bracelet is designed to support
+    mental clarity, emotional balance, and confident decision-making .
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - lapis
+  - spiritual bracelet
+  - zodiac
+- handle: leo-zodiac-tiger-eye-citrine-bracelet-for-women
+  title: Leo (सिंह राशि) Zodiac Tiger Eye & Citrine Bracelet for Women
+  type: Bracelet
+  price_inr: 899.0
+  planet: null
+  for_women: true
+  benefits: Leos are naturally confident, ambitious, and born to lead, but the pressure to succeed can sometimes lead to self-doubt
+    or mental stress. This Leo (सिंह राशि) Zodiac Tiger Eye & Citrine Bracelet is designed to support confidence, positivity,
+    and success-focused mindset.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - spiritual bracelet
+  - tiger
+  - zodiac
+- handle: lapis-lazuli-bracelet
+  title: Lapis Lazuli Bracelet
+  type: Bracelet
+  price_inr: 799.0
+  planet: null
+  for_women: false
+  benefits: The Lapis Lazuli Bracelet is a stunning accessory that combines beauty with powerful energy. Known for enhancing
+    clarity, wisdom, and self-expression , Lapis Lazuli helps you stay focused and confident.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - lapis
+  - spiritual bracelet
+- handle: gemini-zodiac-green-aventurine-milky-quartz-bracelet-for-women
+  title: Gemini (मिथुन राशि) Zodiac Green Aventurine & Milky Quartz Bracelet for Women
+  type: Bracelet
+  price_inr: 899.0
+  planet: null
+  for_women: true
+  benefits: Gemini women are intelligent, curious, and full of ideas. However, their fast-moving minds can sometimes lead
+    to overthinking, mental restlessness, and difficulty staying focused.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - quartz
+  - spiritual bracelet
+  - zodiac
+- handle: evil-eye-hamsa-bracelet
+  title: Evil Eye Hamsa Bracelet
+  type: Bracelet
+  price_inr: 799.0
+  planet: null
+  for_women: false
+  benefits: This Evil Eye Bracelet protects you from negativity and gives you calm, positive energy all day. The powerful
+    blue beads keep away nazar , bad luck , and unwanted thoughts .
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - spiritual bracelet
+- handle: divya-rudraksha-karungali-bracelet-8mm
+  title: Divya Rudraksha Karungali Bracelet 8mm
+  type: Bracelet
+  price_inr: 599.0
+  planet: null
+  for_women: false
+  benefits: The Divya Rudraksha Karungali Bracelet is a powerful protection and healing bracelet designed to keep your mind,
+    energy, and life balanced. Karungali absorbs negativity, removes bad vibes, and protects you from unseen energy attacks,
+    while Rudraksha brings peace, focus, and spiritual strength.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - rudraksha
+  - spiritual bracelet
+- handle: dhan-yog-chips-bracelet
+  title: Dhan Yog Chips Bracelet
+  type: Bracelet
+  price_inr: 999.0
+  planet: null
+  for_women: false
+  benefits: 'Dhan Yog Chips Bracelet signifies prosperity, financial growth, and positive money energy. Crystal Highlights:
+    Tiger Eye - Improves Health Pyrite - Attracts Money Citrine - Helps in Career Growth Quartz - Boosts Crystal Power by
+    10x Green Aventurine - Attracts Luck Note: Natural crystals may lighten in strong sunlight.'
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - spiritual bracelet
+- handle: dhan-yog-bracelet-with-zodiac-charm
+  title: Dhan Yog Bracelet with Zodiac Charm
+  type: Bracelet
+  price_inr: 899.0
+  planet: null
+  for_women: false
+  benefits: 'Attract wealth and stay energetically balanced with the Dhan Yog Bracelet with Zodiac Charm , designed to activate
+    Dhan Yog energy for financial growth, confident decision-making, and success-focused clarity. Made with powerful wealth-aligned
+    crystals: Tiger Eye – Supports focus and confidence Pyrite – Attracts money and abundance Citrine – Encourages career
+    growth Quartz – Amplifies crystal energy Green Aventurine – Brings luck and opportunities Hematite – Boosts motivation
+    and drive A thoughtful gift for birthdays, new beginnings, and wishes of prosperity and success .'
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - spiritual bracelet
+  - zodiac
+- handle: dhan-yog-bracelet-women-6mm-beads
+  title: Dhan Yog Bracelet (Women - 6mm Beads)
+  type: Bracelet
+  price_inr: 699.0
+  planet: null
+  for_women: true
+  benefits: 'The Dhan Yog Bracelet for Women blends a stylish look with wealth-attracting energy. Made with 6mm beads, it’s
+    crafted from powerful crystals like Tiger Eye - Improves Focus & Confidence Pyrite - Attracts Money Citrine - Helps in
+    Career Growth Quartz - Boosts Crystal Power by 10x Green Aventurine - Attracts Luck Hematite - Enhances Motivation Note:
+    Genuine crystals may naturally fade to a lighter shade if exposed to sunlight for a long time.'
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - spiritual bracelet
+- handle: dhan-yog-bracelet-lab-certified
+  title: Dhan Yog Bracelet (Lab Certified)
+  type: Bracelet
+  price_inr: 699.0
+  planet: null
+  for_women: false
+  benefits: 'Attract wealth and keep your energy balanced with the Dhan Yog Bracelet , made with Tiger Eye - Improves Focus
+    & Confidence Pyrite - Attracts Money Citrine - Helps in Career Growth Quartz - Boosts Crystal Power by 10x Green Aventurine
+    - Attracts Luck Hematite - Enhances Motivation Note: Prolonged sunlight may naturally fade genuine crystals to a lighter
+    shade. This is common and a normal sign of authenticity.'
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - spiritual bracelet
+- handle: dhan-rudraksha-bracelet
+  title: Dhan Rudraksha Bracelet
+  type: Bracelet
+  price_inr: 699.0
+  planet: null
+  for_women: false
+  benefits: The Dhan Rudraksha Bracelet is a sacred accessory believed to bring wealth and abundance. Made with genuine rudraksha
+    beads, its said to attract financial prosperity, remove obstacles, and enhance luck in money matters.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - rudraksha
+  - spiritual bracelet
+- handle: dhan-lakshmi-bracelet
+  title: Dhan Lakshmi Bracelet
+  type: Bracelet
+  price_inr: 799.0
+  planet: null
+  for_women: false
+  benefits: The Dhan Lakshmi Bracelet attracts wealth, stability, and protection into your everyday life. Made with powerful
+    crystals, it supports better money flow, confidence, and financial peace for daily life.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - spiritual bracelet
+- handle: citrine-bracelet-the-merchant-s-stone
+  title: Citrine Bracelet - The Merchant's Stone
+  type: Bracelet
+  price_inr: 999.0
+  planet: null
+  for_women: false
+  benefits: Citrine is known as the stone of prosperity and positive energy . In Vedic belief, it is connected with Jupiter
+    (Guru Graha), the planet of growth, wisdom, and good fortune .
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - spiritual bracelet
+- handle: capricorn-zodiac-garnet-milky-quartz-bracelet-for-women
+  title: Capricorn (मकर राशि) Zodiac Garnet & Milky Quartz Bracelet for Women
+  type: Bracelet
+  price_inr: 899.0
+  planet: null
+  for_women: true
+  benefits: Capricorn women are hardworking, disciplined, and determined to achieve their goals, but carrying too many responsibilities
+    can sometimes feel overwhelming. This Capricorn (मकर राशि) Zodiac Garnet & Milky Quartz Bracelet is designed to support
+    resilience, emotional well-being, and steady focus.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - quartz
+  - spiritual bracelet
+  - zodiac
+- handle: cancer-zodiac-howlite-milky-quartz-bracelet-for-women
+  title: Cancer (कर्क राशि) Zodiac Howlite & Milky Quartz Bracelet for Women
+  type: Bracelet
+  price_inr: 899.0
+  planet: null
+  for_women: true
+  benefits: Cancers are naturally caring, intuitive, and nurturing, but they often absorb the emotions of others, leaving
+    them feeling mentally and emotionally drained. This Cancer (कर्क राशि) Zodiac Howlite & Milky Quartz Bracelet is designed
+    to support emotional balance, inner peace, and mental calm.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - quartz
+  - spiritual bracelet
+  - zodiac
+- handle: black-obsidian-bracelet
+  title: Black Obsidian Bracelet
+  type: Bracelet
+  price_inr: 599.0
+  planet: null
+  for_women: false
+  benefits: The Black Obsidian Bracelet is a powerful shield of protection and strength. Known for its ability to block negativity
+    and remove confusion, this natural volcanic stone keeps your energy grounded and your mind calm.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - obsidian
+  - spiritual bracelet
+- handle: aries-zodiac-red-jasper-tiger-eye-bracelet-for-women
+  title: Aries (मेष राशि) Zodiac Red Jasper & Tiger Eye Bracelet for Women
+  type: Bracelet
+  price_inr: 899.0
+  planet: null
+  for_women: true
+  benefits: Aries women are naturally confident, energetic, and fearless, but their fast-paced nature can sometimes lead to
+    impatience and impulsive decisions. This Aries (मेष राशि) Zodiac Red Jasper & Tiger Eye Bracelet is designed to support
+    balance, focus, and confidence.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - spiritual bracelet
+  - tiger
+  - zodiac
+- handle: aquarius-zodiac-amethyst-lapis-lazuli-bracelet-for-women
+  title: Aquarius (कुंभ राशि) Zodiac Amethyst & Lapis Lazuli Bracelet for Women
+  type: Bracelet
+  price_inr: 899.0
+  planet: null
+  for_women: true
+  benefits: Aquarius women are independent, creative, and forward-thinking, but they can sometimes overthink situations or
+    disconnect from their emotions. This Aquarius (कुंभ राशि) Zodiac Amethyst & Lapis Lazuli Bracelet is designed to support
+    emotional awareness, mental clarity, and confident self-expression.
+  tags:
+  - amethyst
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - lapis
+  - spiritual bracelet
+  - zodiac
+- handle: amethyst-bracelet
+  title: Amethyst Bracelet
+  type: Bracelet
+  price_inr: 799.0
+  planet: null
+  for_women: false
+  benefits: Made for anyone seeking calm, clarity, and emotional healing, this Original Amethyst Bracelet is crafted from
+    natural 8mm jamunia stone beads, long known as a powerful crystal for stress relief and better sleep. Why Choose This
+    Bracelet Natural Amethyst Stone Beads - 100% original, untreated amethyst stone beads for genuine crystal energy.
+  tags:
+  - amethyst
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - spiritual bracelet
+- handle: 7-mukhi-rudraksha-bracelet
+  title: 7 Mukhi Rudraksha Bracelet
+  type: Bracelet
+  price_inr: 799.0
+  planet: null
+  for_women: false
+  benefits: The 7 Mukhi Rudraksha Bracelet is known for attracting wealth, stability, and the blessings of Goddess Mahalakshmi
+    . This sacred Rudraksha is believed to help remove financial blockages, reduce money-related stress, and support steady
+    growth in life .
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - rudraksha
+  - spiritual bracelet
+- handle: 5-mukhi-rudraksha-bracelet
+  title: 5 Mukhi Rudraksha Bracelet
+  type: Bracelet
+  price_inr: 499.0
+  planet: null
+  for_women: false
+  benefits: Experience peace, clarity, and spiritual protection with this powerful 5 Mukhi Rudraksha Bracelet . Made from
+    authentic 5 Mukhi Rudraksha, this sacred Rudraksha bracelet is known for promoting emotional balance, enhancing focus,
+    and supporting overall well-being.
+  tags:
+  - astrology bracelet
+  - bracelet
+  - jastro
+  - rudraksha
+  - spiritual bracelet

@@ -21,6 +21,7 @@ from datetime import date, datetime, time, timezone
 from pathlib import Path
 
 from astrobot.astro.ephemeris import BirthData
+from astrobot.engine import products
 from astrobot.engine.evidence import build_evidence
 
 DATA_DIR = Path(os.environ.get("ASTROBOT_DATA_DIR", Path(__file__).resolve().parents[2] / "data"))
@@ -35,6 +36,7 @@ KEYWORDS = [
     ("private", r"\b(job|private|company|corporate|mnc|it|software|engineer|sales|bank|employee|designer)\b"),
 ]
 INTENTS = [
+    ("remedy", r"\b(gem\w*|stone|ratna|jewell?e?ry|bracelet|ring|pendant|rudraksha|remed\w*|upay|upaay|wear)\b"),
     ("worry", r"\b(worr\w*|insecur\w*|scared|afraid|fear|tension|anxious|stuck|lost|confus\w*|hopeless|depress\w*|"
               r"will i (ever )?(succeed|grow|settle)|is my career|future|kuch hoga|pareshan|dar)\b"),
     ("timing", r"\b(when|kab|which (year|month)|what time|how long|how soon|by when|date|timing|this year|next year)\b"),
@@ -90,6 +92,11 @@ def _birth(state: dict) -> BirthData:
     return BirthData(date.fromisoformat(b["date"]), time.fromisoformat(b["time"]), b["latitude"], b["longitude"],
                      tz=b.get("tz", "Asia/Kolkata"), name=b.get("name", ""), place=b.get("place", ""),
                      time_certainty=b.get("time_certainty", "exact"))
+
+
+def _chart(state: dict):
+    from astrobot.astro.chart import Chart
+    return Chart.from_birth(_birth(state))
 
 
 def evidence(state: dict) -> dict:
@@ -172,6 +179,10 @@ def focus(state: dict, ev: dict, kind: str, text: str) -> dict:
     f = {"intent": kind, "direction": direction(state, ev), "direction_text": direction_text(state, ev), "now": ph["current"], "next_weeks": ph["next_weeks"],
          "next_months": ph["next_months"], "upcoming_transitions": ph["upcoming_transitions"],
          "for_their_work": dict(zip(("good_periods_bring", "tough_periods_bring"), FRAMING[sector]))}
+    if kind == "remedy" or (kind != "first_reading" and not state.get("product_offered")):
+        md, ad = ev["current_dasha"]["antardasha"]["lords"]
+        f["product"] = products.recommend(_chart(state), md, ad, sector, state["birth"].get("gender", ""))
+        state["product_offered"] = True
     if kind == "timing":
         event = next((e for pattern, e in EVENTS if re.search(pattern, text.lower())), None)
         outcome = event if event in ("business", "government") else KP_OUTCOME.get(sector, "job")
@@ -218,6 +229,20 @@ def _feel(f: dict) -> list[str]:
     return out
 
 
+def _product_lines(p: dict) -> list[str]:
+    out = []
+    if p.get("gemstone"):
+        out.append(f"For career, strengthen {p['planet']}, your {p['role']}: the stone for it is {p['gemstone']['title']} "
+                   f"(from Rs {p['gemstone']['price_inr']:,.0f} on the JASTRO store). {p['gemstone']['benefits']}")
+        if p.get("substitute"):
+            out.append(f"A lighter option is {p['substitute']['title']} (Rs {p['substitute']['price_inr']:,.0f}).")
+    if p.get("bracelet"):
+        out.append(f"For daily wear, the {p['bracelet']['title']} (Rs {p['bracelet']['price_inr']:,.0f}) is a simple "
+                   f"support: {p['bracelet']['benefits']}")
+    out.append("Wear a stone only after an astrologer checks it for you; it supports effort, it does not replace it.")
+    return out
+
+
 def template(state: dict, f: dict) -> str:
     good, bad = FRAMING[f["direction"]["sector"]]
     cur = f["now"]
@@ -236,6 +261,8 @@ def template(state: dict, f: dict) -> str:
             lines.append(f"Go slower from {_month(w['start'])} to {_month(w['end'])}, which may bring {bad}.")
     elif f["intent"] == "direction":
         lines[:0] = [f["direction_text"], LIMIT]
+    elif f["intent"] == "remedy" and f.get("product"):
+        lines += _product_lines(f["product"])
     elif f["intent"] == "first_reading":
         lines.insert(0, "Thank you. " + f["direction_text"])
     else:
