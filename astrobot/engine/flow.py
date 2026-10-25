@@ -216,6 +216,8 @@ def focus(state: dict, ev: dict, kind: str, text: str) -> dict:
         state["product_offered"] = True
         if f["product"]:
             f["product"]["aligned_to"] = _alignment(state, f, f["product"])
+            f["product"]["asked_about"] = _asked_product(f["product"], text)
+            f["must_say"] = must_say(f["product"]) if kind == "remedy" else []
     if kind == "timing":
         event = next((e for pattern, e in EVENTS if re.search(pattern, text.lower())), None)
         outcome = event if event in ("business", "government") else KP_OUTCOME.get(sector, "job")
@@ -238,7 +240,16 @@ def answer(state: dict, text: str, kind: str | None = None) -> str:
     except ProviderNotConfigured:
         return template(state, ev["focus"])
     history = state.setdefault("history", [])
-    out = provider.complete(system_prompt("career", ev), [*history, {"role": "user", "content": text}])
+    messages = [*history, {"role": "user", "content": text}]
+    system = system_prompt("career", ev)
+    out = provider.complete(system, messages)
+    points = ev["focus"].get("must_say", [])
+    if missing(out, points):
+        fix = ("Rewrite your reply so it opens with these points, in your own words, then the rest: "
+               + "; ".join(missing(out, points)))
+        out = provider.complete(system, [*messages, {"role": "assistant", "content": out}, {"role": "user", "content": fix}])
+        if missing(out, points):
+            out = "\n".join(_product_lines(ev["focus"]["product"]))
     history += [{"role": "user", "content": text}, {"role": "assistant", "content": out}]
     return out
 
@@ -276,22 +287,61 @@ def _alignment(state: dict, f: dict, p: dict) -> dict:
             if window else None}
 
 
-def _product_lines(p: dict) -> list[str]:
+def _asked_product(p: dict, text: str) -> str | None:
+    t = text.lower()
+    return next((p[k]["title"] for k in ("gemstone", "substitute", "bracelet")
+                 if p.get(k) and p[k]["title"].lower().split(" (")[0] in t), None)
+
+
+def must_say(p: dict) -> list[dict]:
+    """Facts a remedy reply has to carry, each with a check word, so a reply that skips them is caught."""
+    a = p["aligned_to"]
     out = []
-    a = p.get("aligned_to") or {}
     if p.get("gemstone"):
-        out.append(f"For {a.get('goal', 'your career')}, strengthen {p['planet']}: it {a.get('why_this_planet') or 'supports your career'}. "
-                   f"Its stone is {p['gemstone']['title']} (from Rs {p['gemstone']['price_inr']:,.0f} on the JASTRO store). "
-                   f"{p['gemstone']['benefits']}")
+        role = f"{p['planet']}, your {p['role']}"
+        sub = p.get("substitute")
+        if sub and p.get("asked_about") == sub["title"]:
+            out.append({"say": f"{sub['title']} stands in for {p['gemstone']['title']}, the stone of {role}",
+                        "check": [p["gemstone"]["title"], p["planet"]]})
+        else:
+            out.append({"say": f"{p['gemstone']['title']} is the stone of {role}", "check": [p["planet"]]})
+    out.append({"say": f"it helps your aim: {a['goal']}", "check": [re.split(r"[ ,]", a["goal"])[0]]})
+    if a.get("next_strong_stretch"):
+        w = a["next_strong_stretch"]
+        out.append({"say": f"start wearing it before {_day(w['start'])}, ahead of your stronger stretch until "
+                           f"{_day(w['end'])}", "check": [datetime.fromisoformat(w["start"]).strftime("%B")]})
+    return out
+
+
+def missing(reply: str, points: list[dict]) -> list[str]:
+    t = reply.lower()
+    return [p["say"] for p in points if not all(c.lower() in t for c in p["check"])]
+
+
+def _product_lines(p: dict) -> list[str]:
+    a = p.get("aligned_to") or {}
+    out = []
+    asked = p.get("asked_about")
+    if p.get("gemstone"):
+        sub = p.get("substitute")
+        if sub and asked == sub["title"]:
+            out.append(f"{sub['title']} stands in for {p['gemstone']['title']}, the stone of {p['planet']}, your "
+                       f"{p['role']}, which {a.get('why_this_planet', 'supports your career')}.")
+            out.append(f"For your aim of {a.get('goal')}, it supports " + ", ".join(sub["at_work"]) + ".")
+        else:
+            out.append(f"For your aim of {a.get('goal')}, strengthen {p['planet']}: it {a.get('why_this_planet')}. "
+                       f"Its stone is {p['gemstone']['title']} (from Rs {p['gemstone']['price_inr']:,.0f} on the JASTRO "
+                       f"store), which supports " + ", ".join(p["gemstone"]["at_work"]) + ".")
+            if sub:
+                out.append(f"A lighter option is {sub['title']} (Rs {sub['price_inr']:,.0f}).")
         if a.get("next_strong_stretch"):
             w = a["next_strong_stretch"]
-            out.append(f"Start before your stronger stretch, {_day(w['start'])} to {_day(w['end'])}, so it backs your push then.")
-        if p.get("substitute"):
-            out.append(f"A lighter option is {p['substitute']['title']} (Rs {p['substitute']['price_inr']:,.0f}).")
-    if p.get("bracelet"):
-        out.append(f"For daily wear, the {p['bracelet']['title']} (Rs {p['bracelet']['price_inr']:,.0f}) is a simple "
-                   f"support: {p['bracelet']['benefits']}")
-    out.append("Wear a stone only after an astrologer checks it for you; it supports effort, it does not replace it.")
+            out.append(f"Start wearing it before {_day(w['start'])}, so it backs your push in the stronger stretch "
+                       f"until {_day(w['end'])}.")
+    if p.get("bracelet") and asked in (None, p["bracelet"]["title"]):
+        out.append(f"For daily wear, the {p['bracelet']['title']} (Rs {p['bracelet']['price_inr']:,.0f}) supports "
+                   + ", ".join(p["bracelet"]["at_work"]) + ".")
+    out.append("Confirm the stone with an astrologer before wearing; it supports your effort, it does not replace it.")
     return out
 
 

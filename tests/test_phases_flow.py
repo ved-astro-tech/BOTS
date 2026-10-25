@@ -57,6 +57,13 @@ def test_intents():
     assert flow.intent("what benefits can I have wearing citrine?") == "remedy"
 
 
+def test_missing_catches_a_generic_reply():
+    points = [{"say": "Citrine stands in for Pukhraj, the stone of Jupiter", "check": ["Pukhraj", "Jupiter"]},
+              {"say": "it helps your aim: promotion", "check": ["promotion"]}]
+    assert len(flow.missing("Citrine is known to attract abundance.", points)) == 2
+    assert flow.missing("Citrine stands in for Pukhraj (Jupiter) and helps your promotion.", points) == []
+
+
 def test_goal_comes_from_their_words():
     state = {"answers": {"occupation": {"sector": "government"}}}
     assert flow.goal(state).startswith("posting")

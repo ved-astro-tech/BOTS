@@ -24,6 +24,19 @@ NAVARATNA = {"Sun": r"\bruby\b", "Moon": r"\bpearl\b", "Mars": r"coral|moonga", 
 BRACELET_THEMES = {"job": r"confiden|focus|courage|strength|success|decision",
                    "business": r"merchant|business|wealth|money|prosperity"}
 GOOD_HOUSES, BAD_HOUSES = {1, 5, 9}, {6, 8, 12}
+# Store benefit words -> what they mean at work. The bot speaks in these, not in the store's sentences.
+AT_WORK = [
+    (r"confiden|courage|strength|empower", "confidence to speak up and present your work to seniors"),
+    (r"focus|concentrat|discipline", "steady focus on files, deadlines and details"),
+    (r"clarity|decision|wisdom", "clear judgement when decisions land on your desk"),
+    (r"communicat", "convincing communication in meetings and interviews"),
+    (r"calm|peace|stress|anxiety|soothing|emotional balance", "staying composed under office pressure"),
+    (r"luck|fortune|success", "openings and support coming your way"),
+    (r"wealth|money|prosperity|abundance|financial", "growth in income"),
+    (r"positiv|happiness|energy|joy", "energy and a positive presence that seniors notice"),
+    (r"creativ", "fresh solutions to old problems at work"),
+    (r"protect|negativ|evil eye|obstacle", "protection from workplace negativity and obstacles"),
+]
 
 
 @lru_cache(maxsize=1)
@@ -46,8 +59,12 @@ def pick_planet(chart: Chart, md: str, ad: str) -> dict | None:
     return None
 
 
+def at_work(benefits: str, n: int = 3) -> list[str]:
+    return [effect for pattern, effect in AT_WORK if re.search(pattern, benefits, re.I)][:n]
+
+
 def _brief(p: dict) -> dict:
-    return {"title": p["title"], "price_inr": p["price_inr"], "benefits": p["benefits"], "handle": p["handle"]}
+    return {"title": p["title"], "price_inr": p["price_inr"], "at_work": at_work(p["benefits"]), "handle": p["handle"]}
 
 
 def recommend(chart: Chart, md: str, ad: str, sector: str | None = None, gender: str = "") -> dict | None:
