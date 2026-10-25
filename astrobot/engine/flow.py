@@ -14,6 +14,7 @@ or a WhatsApp webhook can carry it between messages.
 """
 from __future__ import annotations
 
+import difflib
 import json
 import os
 import re
@@ -88,6 +89,12 @@ def classify(text: str, offered: list[str]) -> str | None:
     for sector, pattern in KEYWORDS:
         if re.search(pattern, t):
             return sector
+    # typos ("lwayer", "goverment"): match each word against the keyword list
+    words = {w: sector for sector, pattern in KEYWORDS for w in re.findall(r"[a-z]{5,}", pattern)}
+    for w in re.findall(r"[a-z]{5,}", t):
+        close = difflib.get_close_matches(w, words, n=1, cutoff=0.8)
+        if close:
+            return words[close[0]]
     return None
 
 

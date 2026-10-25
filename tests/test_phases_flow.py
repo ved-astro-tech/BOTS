@@ -46,6 +46,7 @@ def test_classify_answers():
     assert flow.classify("sarkari naukri, railway", offered) == "government"
     assert flow.classify("software engineer at an MNC", offered) == "private"
     assert flow.classify("still looking for a job", offered) == "seeking"
+    assert flow.classify("i am a lwayer", offered) == "profession"
 
 
 def test_intents():
