@@ -54,6 +54,10 @@ def test_intents():
     assert flow.intent("When will I get a promotion?") == "timing"
     assert flow.intent("Should I switch to business?") == "direction"
     assert flow.intent("Tell me about my boss") == "general"
+    assert flow.intent("Why is January 16 to February 20 good?") == "why"
+    periods = [{"period": "A/B/C", "start": "2027-01-16", "end": "2027-02-20"}, {"period": "A/B/D", "start": "2027-02-20", "end": "2027-03-01"}]
+    assert flow._period_asked("why is February 20 good?", periods)["period"] == "A/B/D"
+    assert flow._period_asked("why is January good?", periods)["period"] == "A/B/C"
     assert flow.intent("which gemstone should I wear for my career?") == "remedy"
     assert flow.intent("what benefits can I have wearing citrine?") == "remedy"
 

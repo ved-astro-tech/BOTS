@@ -246,6 +246,7 @@ class Phases:
         return {"method": "relative to this person's own adult periods (Antardasha level)",
                 "current": cur.as_dict(),
                 "lords": {l: q.as_dict() for l, q in self.quality.items() if l in cur.period.lords},
+                "all_lords": {l: q.as_dict() for l, q in self.quality.items()},
                 "next_months": self.pratyantardashas(), "next_weeks": self.sookshmas(),
                 "upcoming_transitions": upcoming, "past_checks": self.past_checks(),
                 "mahadashas": self.mahadashas(),

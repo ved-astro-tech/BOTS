@@ -37,6 +37,7 @@ KEYWORDS = [
     ("private", r"\b(job|private|company|corporate|mnc|it|software|engineer|sales|bank|employee|designer)\b"),
 ]
 INTENTS = [
+    ("why", r"\b(why|reason|how do you know|what makes|kyu|kyon|kaise)\b"),
     ("remedy", r"\b(gem\w*|stone|ratna|jewell?e?ry|bracelet|ring|pendant|rudraksha|remed\w*|upay|upaay|wear\w*|pukhraj|neelam|panna|emerald|ruby|manik|pearl|moti|coral|moonga|hessonite|"
                r"gomed|cat'?s eye|citrine|topaz|opal|amethyst|pyrite|tiger eye)\b"),
     ("worry", r"\b(worr\w*|insecur\w*|scared|afraid|fear|tension|anxious|stuck|lost|confus\w*|hopeless|depress\w*|"
@@ -232,6 +233,15 @@ def focus(state: dict, ev: dict, kind: str, text: str) -> dict:
             f["product"]["aligned_to"] = _alignment(state, f, f["product"])
             f["product"]["asked_about"] = _asked_product(f["product"], text)
             f["must_say"] = must_say(f["product"]) if kind == "remedy" else []
+    if kind == "why":
+        f["asked_period"] = _period_asked(text, ph["next_weeks"] + ph["next_months"]) or ph["current"]
+        lord = f["asked_period"]["period"].split("/")[-1]
+        f["why"] = {"period": f["asked_period"]["period"], "label": f["asked_period"]["label"],
+                    "lord": lord, "factors": ph["all_lords"][lord]["factors"],
+                    "sub_lord_from_main": f["asked_period"]["ad_from_md"],
+                    "how_to_explain": "Each factor is a classical rule (source given); the label compares this "
+                                      "period with the person's own other periods. Say the 1-2 strongest factors in "
+                                      "plain words, with the book name, and be honest if factors are mixed."}
     if kind == "timing":
         event = next((e for pattern, e in EVENTS if re.search(pattern, text.lower())), None)
         outcome = event if event in ("business", "government") else KP_OUTCOME.get(sector, "job")
@@ -304,6 +314,20 @@ def _alignment(state: dict, f: dict, p: dict) -> dict:
             "now_is": f["next_weeks"][0]["label"] if f["next_weeks"] else None,
             "next_strong_stretch": {"start": window["start"], "end": window["end"], "label": window["label"]}
             if window else None}
+
+
+def _period_asked(text: str, periods: list[dict]) -> dict | None:
+    """The period whose month (and day, if given) the person named, e.g. 'January 16 to February 20'."""
+    t = text.lower()
+    months = re.findall(r"\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.? ?(\d{1,2})?", t)
+    if not months:
+        return None
+    mon, day = months[0]
+    for p in periods:
+        start = datetime.fromisoformat(p["start"])
+        if start.strftime("%b").lower() == mon and (not day or int(day) == start.day):
+            return p
+    return next((p for p in periods if datetime.fromisoformat(p["start"]).strftime("%b").lower() == mon), None)
 
 
 def _asked_product(p: dict, text: str) -> str | None:
