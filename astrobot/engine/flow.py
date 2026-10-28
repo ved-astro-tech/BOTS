@@ -52,6 +52,13 @@ EVENTS = [  # timing question -> (KP outcome, Vimshottari window kind)
 ]
 KP_OUTCOME = {"government": "government", "private": "job", "business": "business", "profession": "business",
               "seeking": "job", "student": "job"}
+MAX_WORDS = 55   # a chat bubble, not a report; the persona asks for under 45
+
+
+def too_long(reply: str) -> bool:
+    return len(reply.split()) > MAX_WORDS
+
+
 LIMIT = ("The final choice of path is yours; what your chart shows clearly is which periods favour a move and "
          "which ask for patience.")
 
@@ -249,14 +256,19 @@ def answer(state: dict, text: str, kind: str | None = None) -> str:
     history = state.setdefault("history", [])
     messages = [*history, {"role": "user", "content": text}]
     system = system_prompt("career", ev)
-    out = provider.complete(system, messages)
+    out = provider.complete(system, messages, max_tokens=160)
     points = ev["focus"].get("must_say", [])
+    fixes = []
     if missing(out, points):
-        fix = ("Rewrite your reply so it opens with these points, in your own words, then the rest: "
-               + "; ".join(missing(out, points)))
-        out = provider.complete(system, [*messages, {"role": "assistant", "content": out}, {"role": "user", "content": fix}])
+        fixes.append("open with these points, in your own words: " + "; ".join(missing(out, points)))
+    if too_long(out):
+        fixes.append("cut it to 3 short lines, under 45 words: one insight, one suggestion, one question")
+    if fixes:
+        fix = "Rewrite your reply: " + "; and ".join(fixes) + "."
+        out = provider.complete(system, [*messages, {"role": "assistant", "content": out},
+                                         {"role": "user", "content": fix}], max_tokens=160)
         if missing(out, points):
-            out = "\n".join(_product_lines(ev["focus"]["product"]))
+            out = brief(_product_lines(ev["focus"]["product"]))
     history += [{"role": "user", "content": text}, {"role": "assistant", "content": out}]
     return out
 
@@ -352,6 +364,17 @@ def _product_lines(p: dict) -> list[str]:
     return out
 
 
+def brief(lines: list[str], n: int = 3) -> str:
+    """Chat-sized fallback: the first lines that fit MAX_WORDS, then the question."""
+    body, words = [], 0
+    for line in lines[:-1]:
+        if words + len(line.split()) > MAX_WORDS and body:
+            break
+        body.append(line)
+        words += len(line.split())
+    return "\n".join(body[:n] + [lines[-1]])
+
+
 def template(state: dict, f: dict) -> str:
     good, bad = FRAMING[f["direction"]["sector"]]
     cur = f["now"]
@@ -371,7 +394,7 @@ def template(state: dict, f: dict) -> str:
     elif f["intent"] == "direction":
         lines[:0] = [f["direction_text"], LIMIT]
     elif f["intent"] == "remedy" and f.get("product"):
-        lines += _product_lines(f["product"])
+        return brief(_product_lines(f["product"]) + ["Would you like to know when to start wearing it?"])
     elif f["intent"] == "first_reading":
         lines.insert(0, "Thank you. " + f["direction_text"])
     else:
@@ -388,5 +411,5 @@ def template(state: dict, f: dict) -> str:
         word = {"relief": "things ease", "pressure": "things get heavier for a while",
                 "new chapter": "a new chapter opens"}[t["kind"]]
         lines.append(f"Around {_month(t['date'])}, {word}.")
-    lines.append("These are tendencies to plan with, not fixed fate. What else would you like to know?")
-    return "\n".join(lines)
+    lines.append("What else would you like to know?")
+    return brief(lines)
