@@ -56,6 +56,19 @@ KP_OUTCOME = {"government": "government", "private": "job", "business": "busines
 MAX_WORDS = 55   # a chat bubble, not a report; the persona asks for under 45
 
 
+BOT_CLOSERS = re.compile(
+    r"(how (else )?(can|may) i (assist|help)[^.?!]*[.?!]?|let me know if[^.?!]*[.?!]?|feel free to[^.?!]*[.?!]?|"
+    r"(is there |do you have )?any(thing)? (else|other|more)( you| i)?[^.?!]*(questions?|know|help|assist|explore|discuss)"
+    r"[^.?!]*[.?!]?|what else would you like to know[?]?|if you have (any )?(more|other|further) questions[^.?!]*[.?!]?|"
+    r"would you like to know more[^.?!]*[.?!]?)\s*$", re.I)
+
+
+def strip_closer(reply: str) -> str:
+    """Drop a help-desk sign-off; an astrologer stops after the advice or asks something specific."""
+    cut = BOT_CLOSERS.sub("", reply.strip()).rstrip()
+    return cut if cut else reply
+
+
 def too_long(reply: str) -> bool:
     return len(reply.split()) > MAX_WORDS
 
@@ -279,6 +292,7 @@ def answer(state: dict, text: str, kind: str | None = None) -> str:
                                          {"role": "user", "content": fix}], max_tokens=160)
         if missing(out, points):
             out = brief(_product_lines(ev["focus"]["product"]))
+    out = strip_closer(out)
     history += [{"role": "user", "content": text}, {"role": "assistant", "content": out}]
     return out
 
@@ -384,7 +398,7 @@ def _product_lines(p: dict) -> list[str]:
     if p.get("bracelet") and asked in (None, p["bracelet"]["title"]):
         out.append(f"For daily wear, the {p['bracelet']['title']} (Rs {p['bracelet']['price_inr']:,.0f}) supports "
                    + ", ".join(p["bracelet"]["at_work"]) + ".")
-    out.append("Confirm the stone with an astrologer before wearing; it supports your effort, it does not replace it.")
+    out.append("Have the stone checked once before you wear it; it supports your effort, it does not replace it.")
     return out
 
 
@@ -418,7 +432,7 @@ def template(state: dict, f: dict) -> str:
     elif f["intent"] == "direction":
         lines[:0] = [f["direction_text"], LIMIT]
     elif f["intent"] == "remedy" and f.get("product"):
-        return brief(_product_lines(f["product"]) + ["Would you like to know when to start wearing it?"])
+        return brief(_product_lines(f["product"]) + [""]).rstrip()
     elif f["intent"] == "first_reading":
         lines.insert(0, "Thank you. " + f["direction_text"])
     else:
@@ -435,5 +449,4 @@ def template(state: dict, f: dict) -> str:
         word = {"relief": "things ease", "pressure": "things get heavier for a while",
                 "new chapter": "a new chapter opens"}[t["kind"]]
         lines.append(f"Around {_month(t['date'])}, {word}.")
-    lines.append("What else would you like to know?")
-    return brief(lines)
+    return brief(lines + [""]).rstrip()

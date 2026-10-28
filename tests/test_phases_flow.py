@@ -62,6 +62,12 @@ def test_intents():
     assert flow.intent("what benefits can I have wearing citrine?") == "remedy"
 
 
+def test_help_desk_closers_are_stripped():
+    assert flow.strip_closer("Moon is strong now. How else can I assist you?") == "Moon is strong now."
+    assert flow.strip_closer("Wait till March. Let me know if you have more questions!") == "Wait till March."
+    assert flow.strip_closer("Wait till March. Is it the money that worries you, or the recognition?").endswith("recognition?")
+
+
 def test_missing_catches_a_generic_reply():
     points = [{"say": "Citrine stands in for Pukhraj, the stone of Jupiter", "check": ["Pukhraj", "Jupiter"]},
               {"say": "it helps your aim: promotion", "check": ["promotion"]}]
@@ -98,7 +104,7 @@ def test_flow_runs_end_to_end_without_llm(tmp_path, monkeypatch):
     state, text = flow.reply(state, "Which gemstone should I wear?")
     assert "JASTRO store" in text
     state, text = flow.reply(state, "I feel stuck and worried")
-    assert "What else would you like to know?" in text
+    assert "What else would you like to know" not in text
     rows = (tmp_path / "career_confirmations.jsonl").read_text().splitlines()
     assert '"sector": "private"' in rows[0]
 
