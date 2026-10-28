@@ -23,6 +23,10 @@ Conversation: if focus is present, answer for focus.intent and lead with focus's
   setback window to go slower in. Rise and fall, not a single date.
 - direction (switch, which path): use focus.direction (fit: strongest, supported, weaker) and, in one humble line,
   focus.direction.limit: the choice is theirs, the chart shows which periods favour a move.
+- remedy, when focus.remedy is present (they ask how to reduce obstructions or what to do about a period): lead
+  with focus.remedy: the planet running that period, its mantra and day, and the one deed, in plain words. If
+  focus.remedy.obstruction.nature is "obstructed", say the results come with effort and the remedy steadies it.
+  Then one line on the product only if focus.product.planet is the same planet or the 10th lord; otherwise skip it.
 - remedy (gemstone, jewellery, bracelet, what to wear, or the benefits of one product): make it about THEM.
   Open with focus.must_say, in that order and in your own words: which planet the stone serves and its role in
   their chart, their aim, and when to start. Then explain the product through its at_work effects, tied to their

@@ -38,7 +38,9 @@ KEYWORDS = [
 ]
 INTENTS = [
     ("why", r"\b(why|reason|how do you know|what makes|kyu|kyon|kaise)\b"),
-    ("remedy", r"\b(gem\w*|stone|ratna|jewell?e?ry|bracelet|ring|pendant|rudraksha|remed\w*|upay|upaay|wear\w*|pukhraj|neelam|panna|emerald|ruby|manik|pearl|moti|coral|moonga|hessonite|"
+    ("remedy", r"\b(gem\w*|stone|ratna|jewell?e?ry|bracelet|ring|pendant|rudraksha|remed\w*|upay|upaay|wear\w*|"
+               r"obstruct\w*|remove|reduce|solution|what (should|can) i do|kya karu|totka|"
+               r"pukhraj|neelam|panna|emerald|ruby|manik|pearl|moti|coral|moonga|hessonite|"
                r"gomed|cat'?s eye|citrine|topaz|opal|amethyst|pyrite|tiger eye)\b"),
     ("worry", r"\b(worr\w*|insecur\w*|scared|afraid|fear|tension|anxious|stuck|lost|confus\w*|hopeless|depress\w*|"
               r"will i (ever )?(succeed|grow|settle)|is my career|future|kuch hoga|pareshan|dar)\b"),
@@ -91,6 +93,19 @@ GOALS = [  # what the person wants soon, from their own words; the latest one me
     ("more income", r"\b(money|income|salary|earn\w*|savings?)\b"),
     ("peace of mind at work", r"\b(stress\w*|tension|pressure|politics|conflict\w*)\b"),
 ]
+# Simple planetary remedies as commonly prescribed by practitioners (mantra, day, charity). Labelled as tradition,
+# not shastra: BPHS prescribes only the planet's mantra japa and gifts (Ch. 85-86); the specifics below are usage.
+PLANET_REMEDY = {
+    "Sun": ("Om Suryaya Namah", "Sunday", "offer water to the Sun at sunrise; serve your father or elders"),
+    "Moon": ("Om Chandraya Namah", "Monday", "spend time with your mother; donate milk or rice; keep a calm routine"),
+    "Mars": ("Om Mangalaya Namah", "Tuesday", "Hanuman Chalisa; donate red lentils; avoid anger"),
+    "Mercury": ("Om Budhaya Namah", "Wednesday", "feed green fodder to cows; donate to students"),
+    "Jupiter": ("Om Gurave Namah", "Thursday", "serve a teacher; donate yellow things; respect elders"),
+    "Venus": ("Om Shukraya Namah", "Friday", "donate white sweets; keep cleanliness and courtesy"),
+    "Saturn": ("Om Shanaishcharaya Namah", "Saturday", "serve the poor and workers; donate black sesame or oil"),
+    "Rahu": ("Om Rahave Namah", "Saturday", "donate to the needy; avoid shortcuts and intoxicants"),
+    "Ketu": ("Om Ketave Namah", "Tuesday", "feed dogs; Ganesh worship; keep spiritual discipline"),
+}
 PLANET_ROLE = {"10th lord": "rules your career house, so it lifts status, authority and results at work",
                "Lagna lord": "rules your Lagna, so it builds confidence and the strength to push for results",
                "Mahadasha lord": "runs your current Mahadasha, so it shapes how this whole period goes",
@@ -242,6 +257,18 @@ def focus(state: dict, ev: dict, kind: str, text: str) -> dict:
     f = {"intent": kind, "direction": direction(state, ev), "direction_text": direction_text(state, ev), "now": ph["current"], "next_weeks": ph["next_weeks"],
          "next_months": ph["next_months"], "upcoming_transitions": ph["upcoming_transitions"],
          "for_their_work": dict(zip(("good_periods_bring", "tough_periods_bring"), FRAMING[sector]))}
+    if kind == "remedy":
+        asked = _period_asked(text, ph["next_weeks"] + ph["next_months"]) or state.get("last_period") or ph["current"]
+        lord = asked["period"].split("/")[-1]
+        mantra, day, deed = PLANET_REMEDY[lord]
+        f["remedy"] = {"for_planet": lord, "period": asked["period"], "start": asked["start"], "end": asked["end"],
+                       "obstruction": asked.get("ad_from_md"), "mantra": mantra, "day": day, "deed": deed,
+                       "source": "practitioner tradition; BPHS Ch. 85-86 prescribes mantra japa and gifts of the planet",
+                       "how_to_explain": "Name the planet that runs the period and give its mantra, day and one deed. "
+                                         "Then the product only if it serves the same planet or the 10th lord."}
+    if kind == "why":
+        f["asked_period"] = _period_asked(text, ph["next_weeks"] + ph["next_months"]) or ph["current"]
+        state["last_period"] = f["asked_period"]
     if kind == "remedy" or (kind != "first_reading" and not state.get("product_offered")):
         md, ad = ev["current_dasha"]["antardasha"]["lords"]
         f["product"] = products.recommend(_chart(state), md, ad, sector, state["birth"].get("gender", ""))
@@ -249,9 +276,12 @@ def focus(state: dict, ev: dict, kind: str, text: str) -> dict:
         if f["product"]:
             f["product"]["aligned_to"] = _alignment(state, f, f["product"])
             f["product"]["asked_about"] = _asked_product(f["product"], text)
-            f["must_say"] = must_say(f["product"]) if kind == "remedy" else []
+            f["must_say"] = must_say(f["product"]) if kind == "remedy" and "remedy" not in f else []
+    if f.get("remedy"):
+        r = f["remedy"]
+        f["must_say"] = [{"say": f"{r['for_planet']} runs that period; its mantra is {r['mantra']}",
+                          "check": [r["for_planet"], r["mantra"].split()[1]]}]
     if kind == "why":
-        f["asked_period"] = _period_asked(text, ph["next_weeks"] + ph["next_months"]) or ph["current"]
         lord = f["asked_period"]["period"].split("/")[-1]
         f["why"] = {"period": f["asked_period"]["period"], "label": f["asked_period"]["label"],
                     "lord": lord, "factors": ph["all_lords"][lord]["factors"],
