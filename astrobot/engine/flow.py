@@ -64,8 +64,12 @@ BOT_CLOSERS = re.compile(
 
 
 def strip_closer(reply: str) -> str:
-    """Drop a help-desk sign-off; an astrologer stops after the advice or asks something specific."""
+    """Drop a help-desk sign-off or a trailing question; the astrologer stops after the advice."""
     cut = BOT_CLOSERS.sub("", reply.strip()).rstrip()
+    sentences = re.split(r"(?<=[.!?])\s+", cut)
+    while len(sentences) > 1 and sentences[-1].endswith("?"):
+        sentences.pop()
+    cut = " ".join(sentences).rstrip()
     return cut if cut else reply
 
 
@@ -285,7 +289,7 @@ def answer(state: dict, text: str, kind: str | None = None) -> str:
     if missing(out, points):
         fixes.append("open with these points, in your own words: " + "; ".join(missing(out, points)))
     if too_long(out):
-        fixes.append("cut it to 3 short lines, under 45 words: one insight, one suggestion, one question")
+        fixes.append("cut it to 3 short lines, under 45 words: one insight, one suggestion, no question")
     if fixes:
         fix = "Rewrite your reply: " + "; and ".join(fixes) + "."
         out = provider.complete(system, [*messages, {"role": "assistant", "content": out},

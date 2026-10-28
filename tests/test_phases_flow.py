@@ -65,7 +65,8 @@ def test_intents():
 def test_help_desk_closers_are_stripped():
     assert flow.strip_closer("Moon is strong now. How else can I assist you?") == "Moon is strong now."
     assert flow.strip_closer("Wait till March. Let me know if you have more questions!") == "Wait till March."
-    assert flow.strip_closer("Wait till March. Is it the money that worries you, or the recognition?").endswith("recognition?")
+    assert flow.strip_closer("Wait till March. Is it the money that worries you, or the recognition?") == "Wait till March."
+    assert flow.strip_closer("Is it the money?") == "Is it the money?"
 
 
 def test_missing_catches_a_generic_reply():
