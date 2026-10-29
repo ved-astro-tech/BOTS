@@ -67,6 +67,22 @@ def _brief(p: dict) -> dict:
     return {"title": p["title"], "price_inr": p["price_inr"], "at_work": at_work(p["benefits"]), "handle": p["handle"]}
 
 
+def for_planet(planet: str, gender: str = "") -> dict:
+    """Store products that serve one planet: its Navaratna stone, a cheaper substitute, and a bracelet if any."""
+    items = catalog()
+    women = gender.lower().startswith(("f", "w"))
+    stones = sorted((p for p in items if p["type"] == "Gemstone" and p["planet"] == planet), key=lambda p: p["price_inr"])
+    main = [p for p in stones if re.search(NAVARATNA[planet], p["title"], re.I)]
+    subs = [p for p in stones if p not in main]
+    bracelets = sorted((p for p in items if p["type"] == "Bracelet" and p["planet"] == planet
+                        and (women or not p["for_women"])), key=lambda p: p["price_inr"])
+    out = {"planet": planet, "gemstone": _brief(main[0]) if main else None,
+           "substitute": _brief(subs[0]) if subs else None, "bracelet": _brief(bracelets[0]) if bracelets else None}
+    if out["substitute"] and out["gemstone"]:
+        out["substitute"]["stands_in_for"] = f'{out["gemstone"]["title"]} ({planet})'
+    return out
+
+
 def recommend(chart: Chart, md: str, ad: str, sector: str | None = None, gender: str = "") -> dict | None:
     items = catalog()
     if not items:

@@ -264,8 +264,10 @@ def focus(state: dict, ev: dict, kind: str, text: str) -> dict:
         f["remedy"] = {"for_planet": lord, "period": asked["period"], "start": asked["start"], "end": asked["end"],
                        "obstruction": asked.get("ad_from_md"), "mantra": mantra, "day": day, "deed": deed,
                        "source": "practitioner tradition; BPHS Ch. 85-86 prescribes mantra japa and gifts of the planet",
-                       "how_to_explain": "Name the planet that runs the period and give its mantra, day and one deed. "
-                                         "Then the product only if it serves the same planet or the 10th lord."}
+                       "product": products.for_planet(lord, state["birth"].get("gender", "")),
+                       "how_to_explain": "Name the planet that runs the period, its mantra and day, then the store "
+                                         "product for that planet (gemstone, with the substitute as the lighter option, "
+                                         "or the bracelet) in one line with its price."}
     if kind == "why":
         f["asked_period"] = _period_asked(text, ph["next_weeks"] + ph["next_months"]) or ph["current"]
         state["last_period"] = f["asked_period"]
@@ -281,6 +283,11 @@ def focus(state: dict, ev: dict, kind: str, text: str) -> dict:
         r = f["remedy"]
         f["must_say"] = [{"say": f"{r['for_planet']} runs that period; its mantra is {r['mantra']}",
                           "check": [r["for_planet"], r["mantra"].split()[1]]}]
+        item = r["product"].get("gemstone") or r["product"].get("substitute") or r["product"].get("bracelet")
+        if item:
+            f["must_say"].append({"say": f"the JASTRO store product for {r['for_planet']} is {item['title']} "
+                                         f"(Rs {item['price_inr']:,.0f}), which supports {', '.join(item['at_work'][:2])}",
+                                  "check": [item["title"].split(" (")[0]]})
     if kind == "why":
         lord = f["asked_period"]["period"].split("/")[-1]
         f["why"] = {"period": f["asked_period"]["period"], "label": f["asked_period"]["label"],
